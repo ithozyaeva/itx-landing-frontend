@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Code from '~icons/ic/twotone-code'
-import Navigation from '../sections/Navigation.vue'
+import Code from "~icons/ic/twotone-code";
+import Navigation from "../sections/Navigation.vue";
+import TelegramAuth from "./TelegramAuth.vue";
 </script>
 
 <template>
@@ -13,6 +14,10 @@ import Navigation from '../sections/Navigation.vue'
         <span>IT-ХОЗЯЕВА</span>
       </div>
       <Navigation />
+      <TelegramAuth
+        bot-name="itx_welcome_bot"
+        @auth="(user) => console.log('User authenticated:', user)"
+      />
       <div class="w-20" />
     </div>
   </header>
