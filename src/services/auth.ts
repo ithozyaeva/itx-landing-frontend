@@ -18,12 +18,12 @@ export const authService = {
     return response.data
   },
 
-  setAuthHeader(telegramId: number) {
-    axios.defaults.headers.common['X-Telegram-User-ID'] = telegramId
+  setAuthHeader(authToken: string) {
+    axios.defaults.headers.common['X-Telegram-User-Token'] = authToken
   },
 
   clearAuthHeader() {
-    delete axios.defaults.headers.common['X-Telegram-User-ID']
+    delete axios.defaults.headers.common['X-Telegram-User-Token']
   },
 
   getBotUrl(): string {

@@ -15,7 +15,7 @@ onMounted(() => {
     authService
       .authenticate(token)
       .then(({ user, token: authToken }) => {
-        authService.setAuthHeader(user.telegram_id)
+        authService.setAuthHeader(authToken)
         emit('auth', user, authToken)
         window.history.replaceState({}, document.title, window.location.pathname)
       })
