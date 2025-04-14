@@ -106,7 +106,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div v-if="error && !mentors.length" class="text-center py-10">
       <div class="flex justify-center mb-4">
         <AlertCircle class="h-12 w-12 text-red-500" />
@@ -124,6 +124,9 @@ onMounted(() => {
 
     <div v-else>
       <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">
+          Наши менторы
+        </h2>
         <div class="relative">
           <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
           <input
@@ -134,8 +137,8 @@ onMounted(() => {
           >
         </div>
 
-        <div class="mt-4">
-          <p class="text-sm text-gray-500 mb-2">
+        <div class="mt-6">
+          <p class="text-sm font-medium text-gray-700 mb-3">
             Фильтр по специализации:
           </p>
           <div class="flex flex-wrap gap-2">
@@ -156,7 +159,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div v-if="loading" class="text-center py-10">
+      <div v-if="loading" class="text-center py-16">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
         <p class="mt-4 text-gray-600">
           Загрузка менторов...
@@ -165,19 +168,19 @@ onMounted(() => {
 
       <div
         v-else-if="filteredMentors.length === 0"
-        class="text-center py-10 text-gray-500"
+        class="text-center py-16 text-gray-500"
       >
         Менторы не найдены
       </div>
 
       <div
         v-else
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
       >
         <div
           v-for="mentor in filteredMentors"
           :key="mentor.id"
-          class="bg-white rounded-lg shadow-md overflow-hidden"
+          class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
         >
           <div class="p-6">
             <div class="flex items-start justify-between">
@@ -206,7 +209,7 @@ onMounted(() => {
                 <span
                   v-for="tag in mentor.profTags"
                   :key="tag.id"
-                  class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
+                  class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
                 >
                   {{ tag.title }}
                 </span>
@@ -233,14 +236,14 @@ onMounted(() => {
               <h4 class="text-sm font-medium text-gray-900 mb-2">
                 Контакты:
               </h4>
-              <div class="flex gap-2">
+              <div class="flex gap-3">
                 <a
                   v-for="contact in mentor.contacts"
                   :key="contact.id"
                   :href="contact.link"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-blue-500 hover:text-blue-700"
+                  class="text-blue-500 hover:text-blue-700 transition-colors duration-200"
                 >
                   <MessageSquare v-if="contact.type === 1" class="h-5 w-5" />
                   <Award v-else-if="contact.type === 2" class="h-5 w-5" />
