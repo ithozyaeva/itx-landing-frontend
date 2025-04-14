@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
 import { defineConfig } from 'vite'
@@ -14,10 +15,8 @@ export default defineConfig({
       autoInstall: true,
       compiler: 'vue3',
     }),
+    basicSsl(),
   ],
-  server: {
-    port: 1337,
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
