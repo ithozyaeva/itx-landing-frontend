@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { API_URL } from '@/services/auth'
-import { AlertCircle, Award, Briefcase, Info, MessageSquare, Search } from 'lucide-vue-next'
-import { h, onMounted, ref, watch } from 'vue'
+import { AlertCircle, Award, Briefcase, MessageSquare, Search } from 'lucide-vue-next'
+import { onMounted, ref, watch } from 'vue'
 
 function reloadPage() {
   window.location.reload()
