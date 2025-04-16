@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { API_URL } from '@/services/auth'
 import { AlertCircle, Award, Briefcase, MessageSquare, Search } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 
@@ -31,7 +30,7 @@ const specializations = ref<string[]>([])
 async function fetchMentors() {
   try {
     loading.value = true
-    const response = await fetch(`${API_URL}/api/mentors`, {
+    const response = await fetch(`/api/mentors`, {
       headers: {
         Accept: 'application/json',
       },
