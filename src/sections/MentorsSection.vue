@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { API_URL } from '@/services/auth'
 import { AlertCircle, Award, Briefcase, MessageSquare, Search } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 
@@ -31,7 +30,7 @@ const specializations = ref<string[]>([])
 async function fetchMentors() {
   try {
     loading.value = true
-    const response = await fetch(`${API_URL}/api/mentors`, {
+    const response = await fetch(`/api/mentors`, {
       headers: {
         Accept: 'application/json',
       },
@@ -42,12 +41,12 @@ async function fetchMentors() {
     }
 
     const data = await response.json()
-    mentors.value = data.items
-    filteredMentors.value = data.items
+    mentors.value = data.items ?? []
+    filteredMentors.value = data.items ?? []
 
     // Собираем все уникальные теги
     const allTags = new Set<string>()
-    data.items.forEach((mentor: Mentor) => {
+    data.items?.forEach((mentor: Mentor) => {
       mentor.profTags.forEach((tag) => {
         allTags.add(tag.title)
       })
