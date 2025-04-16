@@ -41,12 +41,12 @@ async function fetchMentors() {
     }
 
     const data = await response.json()
-    mentors.value = data.items
-    filteredMentors.value = data.items
+    mentors.value = data.items ?? []
+    filteredMentors.value = data.items ?? []
 
     // Собираем все уникальные теги
     const allTags = new Set<string>()
-    data.items.forEach((mentor: Mentor) => {
+    data.items?.forEach((mentor: Mentor) => {
       mentor.profTags.forEach((tag) => {
         allTags.add(tag.title)
       })
