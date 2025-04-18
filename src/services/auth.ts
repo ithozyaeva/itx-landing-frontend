@@ -4,12 +4,10 @@ export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
 export interface TelegramUser {
   id: number
-  telegram_id: number
-  username: string
-  first_name: string
-  last_name: string
-  created_at: string
-  updated_at: string
+  telegramID: number
+  tg: string
+  firstName: string
+  lastName: string
 }
 
 export const authService = {
@@ -27,6 +25,6 @@ export const authService = {
   },
 
   getBotUrl(): string {
-    return `https://t.me/itx_welcome_bot?start=from_site`
+    return `https://t.me/lyaguf_test_bot?start=from_site`
   },
 }
