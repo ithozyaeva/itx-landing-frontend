@@ -1,45 +1,82 @@
 <script setup lang="ts">
-import izede from '@/assets/izede.jpg'
-import placeholderSvg from '@/assets/placeholder.svg'
+import type { TelegramUser } from '@/services/auth'
 import Card from '@/components/ui/Card.vue'
+import { onMounted, ref } from 'vue'
 
 interface Review {
   avatarPath: string
-  author: string
+  author: TelegramUser
   occupation: string
   text: string
 }
 
-const reviews: Review[] = [
-  {
-    avatarPath: izede,
-    author: 'Денис Чернов',
-    occupation: 'Vue-евангелист',
-    text: '"В сообществе царит атмосфера полной поддержки друг дуга, есть чаты на любой вкус. Разработчики самых разных уровней, от начинающих до матерых разработчиков. Клубы и активности идут бесконечным потоком, сообщество само генерирует контент."',
-  },
-  {
-    avatarPath: placeholderSvg,
-    author: 'Мария Иванова',
-    occupation: 'CTO, Startup Hub',
-    text: '"Сообщество IT-ХОЗЯЕВА стало для меня настоящим прорывом. Здесь я нашла единомышленников, менторов и партнеров для своих проектов. Рекомендую всем, кто хочет расти в IT-сфере."',
-  },
-  {
-    avatarPath: placeholderSvg,
-    author: 'Дмитрий Сидоров',
-    occupation: 'Product Manager, Sber',
-    text: '"Благодаря экспертам из IT-ХОЗЯЕВА я смог быстро перепрофилироваться из разработчика в продуктового менеджера. Материалы и поддержка сообщества бесценны для тех, кто хочет развиваться."',
-  },
-  {
-    avatarPath: placeholderSvg,
-    author: 'Елена Смирнова',
-    occupation: 'DevOps Engineer, VK',
-    text: '"Вступила в сообщество год назад, когда только начинала карьеру в DevOps. Сейчас я работаю в крупной компании и продолжаю учиться у лучших специалистов отрасли в IT-ХОЗЯЕВА."',
-  },
-]
+// const reviews: Review[] = [
+//   {
+//     avatarPath: izede,
+//     author: 'Денис Чернов',
+//     occupation: 'Vue-евангелист',
+//     text: '"В сообществе царит атмосфера полной поддержки друг дуга, есть чаты на любой вкус. Разработчики самых разных уровней, от начинающих до матерых разработчиков. Клубы и активности идут бесконечным потоком, сообщество само генерирует контент."',
+//   },
+//   {
+//     avatarPath: placeholderSvg,
+//     author: 'Мария Иванова',
+//     occupation: 'CTO, Startup Hub',
+//     text: '"Сообщество IT-ХОЗЯЕВА стало для меня настоящим прорывом. Здесь я нашла единомышленников, менторов и партнеров для своих проектов. Рекомендую всем, кто хочет расти в IT-сфере."',
+//   },
+//   {
+//     avatarPath: placeholderSvg,
+//     author: 'Дмитрий Сидоров',
+//     occupation: 'Product Manager, Sber',
+//     text: '"Благодаря экспертам из IT-ХОЗЯЕВА я смог быстро перепрофилироваться из разработчика в продуктового менеджера. Материалы и поддержка сообщества бесценны для тех, кто хочет развиваться."',
+//   },
+//   {
+//     avatarPath: placeholderSvg,
+//     author: 'Елена Смирнова',
+//     occupation: 'DevOps Engineer, VK',
+//     text: '"Вступила в сообщество год назад, когда только начинала карьеру в DevOps. Сейчас я работаю в крупной компании и продолжаю учиться у лучших специалистов отрасли в IT-ХОЗЯЕВА."',
+//   },
+// ]
+
+function reloadPage() {
+  window.location.reload()
+}
+
+const reviews = ref<Review[]>([])
+const loading = ref<boolean>(false)
+const error = ref()
+
+async function search() {
+  try {
+    error.value = false
+    loading.value = true
+    const response = await fetch('/api/review-on-community')
+
+    if (!response.ok) {
+      throw new Error('Не удалось загрузить данные о отзывах')
+    }
+
+    reviews.value = await response.json()
+  }
+  catch (err) {
+    console.error(`Произошла ошибка при запросе отзывов - ${err}`)
+    error.value = err
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+onMounted(search)
 </script>
 
 <template>
   <section id="reviews" class="w-full py-12 md:py-24 lg:py-32 bg-muted">
+    <div v-if="loading" class="text-center py-16">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
+      <p class="mt-4 text-gray-600">
+        Загрузка отзывов...
+      </p>
+    </div>
     <div class="container px-4 md:px-6">
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
         <div class="space-y-2">
@@ -55,20 +92,32 @@ const reviews: Review[] = [
         </div>
       </div>
       <div class="mx-auto grid max-w-5xl gap-6 py-12 md:grid-cols-2 md:gap-8">
-        <Card v-for="review in reviews" :key="review.author">
+        <div v-if="error && !reviews.length" class="text-center py-10">
+          <div class="flex justify-center mb-4">
+            <AlertCircle class="h-12 w-12 text-red-500" />
+          </div>
+          <p class="text-red-500 mb-2">
+            {{ error }}
+          </p>
+          <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="reloadPage">
+            Попробовать снова
+          </button>
+        </div>
+
+        <Card v-for="review in reviews" :key="review.author.id">
           <template #content>
             <div class="pt-6">
               <div class="flex items-start gap-4">
                 <img
-                  :src="review.avatarPath" :alt="`Аватар ${review.author}`" class="rounded-full" width="60"
+                  :src="`https://t.me/i/userpic/160/${review.author.tg}.jpg`" :alt="`Аватар ${review.author}`" class="rounded-full" width="60"
                   height="60"
                 >
                 <div class="grid gap-1">
                   <h3 class="font-bold">
-                    {{ review.author }}
+                    {{ review.author.firstName ?? "" }} {{ review.author.lastName ?? "" }}
                   </h3>
                   <p class="text-sm text-muted-foreground">
-                    {{ review.occupation }}
+                    {{ review.author.tg }}
                   </p>
                 </div>
               </div>
