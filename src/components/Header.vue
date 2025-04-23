@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
+import { useToken } from '@/composables/useToken'
 import { useUser } from '@/composables/useUser'
 import Code from '~icons/ic/twotone-code'
 import Navigation from '../sections/Navigation.vue'
 import TelegramAuth from './TelegramAuth.vue'
 
 const tgUser = useUser()
+const tgToken = useToken()
 
-function setUser(user: TelegramUser) {
+function setUser(user: TelegramUser, token: string) {
   tgUser.value = user
+  tgToken.value = token
 }
 </script>
 
