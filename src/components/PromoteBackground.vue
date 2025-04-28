@@ -390,7 +390,7 @@ onMounted(() => {
       count: 6,
     });
 
-    regl.frame(() => {
+    const renderController = regl.frame(() => {
       drawFullscreenQuad()
 
       const time = performance.now() / 1000;
@@ -405,6 +405,7 @@ onMounted(() => {
     })
 
     onUnmounted(() => {
+      renderController.cancel()
       window.removeEventListener('mousemove', handleMouseMove)
     })
   }
