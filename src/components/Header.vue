@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
+import Logo from '@/assets/it-x-logo.svg'
 import { useToken } from '@/composables/useToken'
 import { useUser } from '@/composables/useUser'
-import Code from '~icons/ic/twotone-code'
 import Navigation from '../sections/Navigation.vue'
 import TelegramAuth from './TelegramAuth.vue'
 
@@ -21,8 +21,7 @@ function setUser(user: TelegramUser, token: string) {
   >
     <div class="container flex h-16 items-center justify-between md:justify-between">
       <div class="flex items-center gap-2 font-bold text-xl">
-        <Code class="h-6 w-6" />
-        <span>IT-ХОЗЯЕВА</span>
+        <img :src="Logo" class="w-20">
       </div>
       <Navigation />
       <div class="flex justify-end">
