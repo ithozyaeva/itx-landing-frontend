@@ -219,12 +219,23 @@ onMounted(() => {
     canvasRef.value.width = canvasRef.value.clientWidth * dpr
     canvasRef.value.height = canvasRef.value.clientHeight * dpr
 
+    const handleResize = () => {
+      if (!canvasRef.value) return
+
+      const dpr = Math.min(window.devicePixelRatio, 2)
+
+      canvasRef.value.width = canvasRef.value.clientWidth * dpr
+      canvasRef.value.height = canvasRef.value.clientHeight * dpr
+    }
+
+    window.addEventListener('resize', handleResize)
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!canvasRef.value) return
       
       const rect = canvasRef.value.getBoundingClientRect()
       const x = e.clientX / window.innerWidth * 2 - 1
-      const y = -((e.clientY + rect.top + window.scrollY) / window.innerHeight * 2 - 1)
+      const y = -((e.clientY + rect.top + window.scrollY * 2) / window.innerHeight * 2 - 1)
       mouse.value = [x, y]
     }
 
@@ -311,11 +322,12 @@ onMounted(() => {
 
       void main() {
         vec2 uv = gl_FragCoord.xy / resolution.xy*2.-1.;
-        uv.y *= resolution.y/resolution.x;
+        float ratio = resolution.x / resolution.y;
+        uv.x *= ratio;
         vec2 ruv = uv;
 
-        vec2 mouse_scaled = mouse * vec2(2., 1.) + vec2(1., 0.5);
-        
+        vec2 mouse_scaled = mouse * vec2(1. * ratio, 1.);
+    
         float anim = clamp(sin(time * 0.5) + 1., 0., 0.999);
         float dist = clamp(pow(distance(ruv, mouse_scaled) * 2.0, 5.5), 0., 1.);
 
@@ -343,7 +355,7 @@ onMounted(() => {
             }
             
             if (i > 0.0) {
-              fgColor = mix(bgColor, fgColor, smoothstep(-0.004, -0.001, l));
+              fgColor = mix(bgColor, fgColor, smoothstep(-0.007, -0.002, l));
             }
           `;
         }).join(`
@@ -394,7 +406,7 @@ onMounted(() => {
       drawFullscreenQuad()
 
       const time = performance.now() / 1000;
-      const step = time % figures.length;
+      const step = time % (figures.length - 1);
       
       state.step = step
 
@@ -407,6 +419,7 @@ onMounted(() => {
     onUnmounted(() => {
       renderController.cancel()
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('resize', handleResize)
     })
   }
 })
