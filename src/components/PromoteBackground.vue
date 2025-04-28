@@ -187,7 +187,8 @@ const uniforms: Record<string, () => any> = {
   lineWidth: () => lineWidth,
   step: () => step,
   state: () => state.step,
-  mouse: () => mouse.value
+  mouse: () => mouse.value,
+  scale: () => 1 / Math.min(window.devicePixelRatio, 2)
 }
 
 for (let i = 0; i < 10; i++) {
@@ -235,7 +236,7 @@ onMounted(() => {
       
       const rect = canvasRef.value.getBoundingClientRect()
       const x = e.clientX / window.innerWidth * 2 - 1
-      const y = -((e.clientY + rect.top + window.scrollY * 2) / window.innerHeight * 2 - 1)
+      const y = -((e.clientY + window.scrollY) / window.innerHeight * 2 - 1)
       mouse.value = [x, y]
     }
 
@@ -251,6 +252,7 @@ onMounted(() => {
       uniform float lineWidth;
       uniform float step;
       uniform float state;
+      uniform float scale;
       uniform vec2 mouse;
       
       ${lines.map((line, i) => {
@@ -324,9 +326,12 @@ onMounted(() => {
         vec2 uv = gl_FragCoord.xy / resolution.xy*2.-1.;
         float ratio = resolution.x / resolution.y;
         uv.x *= ratio;
+        uv *= scale;
         vec2 ruv = uv;
 
-        vec2 mouse_scaled = mouse * vec2(1. * ratio, 1.);
+        float invscale = 1. - scale;
+
+        vec2 mouse_scaled = mouse * vec2(1. * ratio, 1.) + vec2(1. * ratio, 1.0) * invscale;
     
         float anim = clamp(sin(time * 0.5) + 1., 0., 0.999);
         float dist = clamp(pow(distance(ruv, mouse_scaled) * 2.0, 5.5), 0., 1.);
