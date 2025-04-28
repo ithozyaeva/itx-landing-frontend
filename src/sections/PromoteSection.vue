@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import logo from '@/assets/logo.png'
-import Button from '@/components/ui/Button.vue'
 import PromoteBackground from '@/components/PromoteBackground.vue'
+import Button from '@/components/ui/Button.vue'
 import Laptop from '~icons/lucide/laptop'
 import MessageSquare from '~icons/lucide/message-square'
 import Users from '~icons/lucide/users'
