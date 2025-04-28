@@ -129,8 +129,10 @@ onMounted(() => {
           </h2>
           <div class="relative">
             <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input v-model="searchQuery" type="text" placeholder="Поиск по имени, специализации или услугам..."
-              class="pl-10 w-full px-4 py-2 border rounded">
+            <input
+              v-model="searchQuery" type="text" placeholder="Поиск по имени, специализации или услугам..."
+              class="pl-10 w-full px-4 py-2 border rounded"
+            >
           </div>
 
           <div class="mt-6">
@@ -138,11 +140,13 @@ onMounted(() => {
               Фильтр по специализации:
             </p>
             <div class="flex flex-wrap gap-2">
-              <span v-for="spec in specializations" :key="spec" class="cursor-pointer px-3 py-1 rounded-full text-sm"
+              <span
+                v-for="spec in specializations" :key="spec" class="cursor-pointer px-3 py-1 rounded-full text-sm"
                 :class="selectedSpecialization === spec
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700'
-                  " @click="handleSpecializationClick(spec)">
+                " @click="handleSpecializationClick(spec)"
+              >
                 {{ spec }}
               </span>
             </div>
@@ -161,8 +165,10 @@ onMounted(() => {
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          <div v-for="mentor in filteredMentors" :key="mentor.id"
-            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+          <div
+            v-for="mentor in filteredMentors" :key="mentor.id"
+            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+          >
             <div class="p-6">
               <div class="flex items-center gap-10">
                 <img :src="`https://t.me/i/userpic/160/${mentor.tg}.jpg`" :alt="`Аватар ${mentor.tg}`" class="rounded-full align-self-center">
@@ -184,8 +190,10 @@ onMounted(() => {
 
               <div class="mt-4">
                 <div class="flex flex-wrap gap-2">
-                  <span v-for="tag in mentor.profTags" :key="tag.id"
-                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                  <span
+                    v-for="tag in mentor.profTags" :key="tag.id"
+                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                  >
                     {{ tag.title }}
                   </span>
                 </div>
@@ -195,8 +203,10 @@ onMounted(() => {
                     Услуги:
                   </h4>
                   <ul class="space-y-2">
-                    <li v-for="service in mentor.services" :key="service.id"
-                      class="flex justify-between items-start text-sm gap-5">
+                    <li
+                      v-for="service in mentor.services" :key="service.id"
+                      class="flex justify-between items-start text-sm gap-5"
+                    >
                       <span>{{ service.name }}</span>
                       <span class="font-medium whitespace-nowrap">{{
                         service.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ₽</span>
@@ -208,21 +218,29 @@ onMounted(() => {
                   <hr class="mb-4">
                   <div class="flex items-center justify-between gap-3">
                     <template v-for="contact in mentor.contacts" :key="contact.id">
-                      <a v-if="contact.type === 1" :href="contact.link" target="_blank"
+                      <a
+                        v-if="contact.type === 1" :href="contact.link" target="_blank"
                         class="text-blue-500 hover:text-blue-700 transition-colors duration-200"
-                        rel="noopener noreferrer">
+                        rel="noopener noreferrer"
+                      >
                         <TgIcon class="h-7 w-7" />
                       </a>
-                      <span v-else-if="contact.type === 2"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer">
+                      <span
+                        v-else-if="contact.type === 2"
+                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+                      >
                         <MailIcon class="h-7 w-7" />
                       </span>
-                      <span v-else-if="contact.type === 3"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer">
+                      <span
+                        v-else-if="contact.type === 3"
+                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+                      >
                         <PhoneIcon class="h-7 w-7" />
                       </span>
-                      <span v-else-if="contact.type === 4"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer">
+                      <span
+                        v-else-if="contact.type === 4"
+                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+                      >
                         <MessageSquare class="h-7 w-7" />
                       </span>
                     </template>
