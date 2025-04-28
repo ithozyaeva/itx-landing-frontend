@@ -236,7 +236,7 @@ onMounted(() => {
       
       const rect = canvasRef.value.getBoundingClientRect()
       const x = e.clientX / window.innerWidth * 2 - 1
-      const y = -((e.clientY + window.scrollY) / window.innerHeight * 2 - 1)
+      const y = -((e.clientY - rect.top) / rect.height * 2 - 1)
       mouse.value = [x, y]
     }
 
