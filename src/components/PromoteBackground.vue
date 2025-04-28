@@ -5,44 +5,44 @@ import { onMounted, onUnmounted, ref } from 'vue'
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const mouse = ref([0, 0])
 
-const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
+const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a
 
-const lerpMatrix = (mat1: number[][], mat2: number[][], v: number) => {
-  const result: number[][] = [];
+function lerpMatrix(mat1: number[][], mat2: number[][], v: number) {
+  const result: number[][] = []
 
   for (let x = 0; x < mat1.length; x++) {
-    result[x] = [];
+    result[x] = []
     for (let y = 0; y < mat1[x].length; y++) {
-      result[x][y] = lerp(mat1[x][y], mat2[x][y], v);
+      result[x][y] = lerp(mat1[x][y], mat2[x][y], v)
     }
   }
 
-  return result;
-};
+  return result
+}
 
-const step = 0.15;
-const lineWidth = 0.025;
-const halfWidth = lineWidth * 0.37;
-const edge = 0.07;
+const step = 0.15
+const lineWidth = 0.025
+const halfWidth = lineWidth * 0.37
+const edge = 0.07
 
-const left = step + 0.08 - halfWidth;
-const right = step - 0.08 + halfWidth;
-const nw = Math.PI * 1.75;
-const nn = Math.PI * 1.5;
-const ss = nn + Math.PI;
-const ww = Math.PI;
-const ee = ww + Math.PI;
-const sw = Math.PI * 2.25;
-const se = Math.PI * 2.75;
-const ne = Math.PI * 3.25;
+const left = step + 0.08 - halfWidth
+const right = step - 0.08 + halfWidth
+const nw = Math.PI * 1.75
+const nn = Math.PI * 1.5
+const ss = nn + Math.PI
+const ww = Math.PI
+const ee = ww + Math.PI
+const sw = Math.PI * 2.25
+const se = Math.PI * 2.75
+const ne = Math.PI * 3.25
 
 const dots = [
   [0, -0.07],
   [0, 0.07],
   [0.15, -0.07],
   [0.15, 0.07],
-  [0.15, 0.0]
-];
+  [0.15, 0.0],
+]
 
 // 8
 const EIGHT = [
@@ -53,33 +53,33 @@ const EIGHT = [
     step + Math.cos(nw) * 0.065,
     Math.sin(nw) * 0.065,
     step + Math.cos(se) * 0.065,
-    Math.sin(se) * 0.065
+    Math.sin(se) * 0.065,
   ],
 
   [
     step + Math.cos(ne) * 0.065,
     Math.sin(ne) * 0.065,
     step + Math.cos(sw) * 0.065,
-    Math.sin(sw) * 0.065
+    Math.sin(sw) * 0.065,
   ],
 
   [
     step + Math.cos(ee) * 0.065,
     Math.sin(ee) * 0.065,
     step + Math.cos(ww) * 0.065,
-    Math.sin(ww) * 0.065
+    Math.sin(ww) * 0.065,
   ],
 
   [
     step + Math.cos(ee) * 0.065,
     Math.sin(ee) * 0.065,
     step + Math.cos(ww) * 0.065,
-    Math.sin(ww) * 0.065
+    Math.sin(ww) * 0.065,
   ],
 ]
 
-const i_x = step + 0.035;
-const t_x = step - 0.035;
+const i_x = step + 0.035
+const t_x = step - 0.035
 
 // IT
 const IT = [
@@ -102,15 +102,15 @@ const IT = [
     i_x + Math.cos(nn) * 0.04,
     Math.sin(nn) * 0.04,
     i_x + Math.cos(ss) * 0.05,
-    Math.sin(ss) * 0.05
+    Math.sin(ss) * 0.05,
   ],
   [
     i_x + Math.cos(nn) * 0.04,
     Math.sin(nn) * 0.04,
     i_x + Math.cos(ss) * 0.05,
-    Math.sin(ss) * 0.05
-  ]
-];
+    Math.sin(ss) * 0.05,
+  ],
+]
 
 // <*>
 const FIRST = [
@@ -121,27 +121,27 @@ const FIRST = [
     right + Math.cos(nw) * 0.06,
     Math.sin(nw) * 0.06,
     right + Math.cos(se) * halfWidth,
-    Math.sin(se) * halfWidth
+    Math.sin(se) * halfWidth,
   ],
   [
     right + Math.cos(sw) * 0.06,
     Math.sin(sw) * 0.06,
     right + Math.cos(ne) * halfWidth,
-    Math.sin(ne) * halfWidth
+    Math.sin(ne) * halfWidth,
   ],
   [
     left + Math.cos(ne) * 0.06,
     Math.sin(ne) * 0.06,
     left + Math.cos(sw) * halfWidth,
-    Math.sin(sw) * halfWidth
+    Math.sin(sw) * halfWidth,
   ],
   [
     left + Math.cos(se) * 0.06,
     Math.sin(se) * 0.06,
     left + Math.cos(nw) * halfWidth,
-    Math.sin(nw) * halfWidth
-  ]
-];
+    Math.sin(nw) * halfWidth,
+  ],
+]
 
 const EYE = [
   [-0.18, -0.18, 0.18, 0.18],
@@ -151,17 +151,17 @@ const EYE = [
     step + halfWidth,
     -halfWidth - edge,
     step - 0.08,
-    -0.08 + edge + lineWidth * 0.5
+    -0.08 + edge + lineWidth * 0.5,
   ],
   [
     step - halfWidth,
     -halfWidth - edge,
     step + 0.08,
-    -0.08 + edge + lineWidth * 0.5
+    -0.08 + edge + lineWidth * 0.5,
   ],
   [step + halfWidth, halfWidth + edge, step - 0.045, -0.045 + edge],
-  [step - halfWidth, halfWidth + edge, step + 0.045, -0.045 + edge]
-];
+  [step - halfWidth, halfWidth + edge, step + 0.045, -0.045 + edge],
+]
 
 const BOOKS = [
   [-0.08, -0.08, 0.08, 0.08],
@@ -170,15 +170,15 @@ const BOOKS = [
   [step + halfWidth, halfWidth, step - 0.045, -0.045],
   [step - halfWidth, halfWidth, step + 0.045, -0.045],
   [step + halfWidth, halfWidth + edge, step - 0.08, -0.08 + edge],
-  [step - halfWidth, halfWidth + edge, step + 0.08, -0.08 + edge]
-];
+  [step - halfWidth, halfWidth + edge, step + 0.08, -0.08 + edge],
+]
 
-const figures = [IT, FIRST, EYE, EIGHT, BOOKS, IT, IT];
+const figures = [IT, FIRST, EYE, EIGHT, BOOKS, IT, IT]
 
-const lines = figures[0];
+const lines = figures[0]
 
-let state = {
-  step: 0
+const state = {
+  step: 0,
 }
 
 const uniforms: Record<string, () => any> = {
@@ -188,30 +188,30 @@ const uniforms: Record<string, () => any> = {
   step: () => step,
   state: () => state.step,
   mouse: () => mouse.value,
-  scale: () => 1 / Math.min(window.devicePixelRatio, 2)
+  scale: () => 1 / Math.min(window.devicePixelRatio, 2),
 }
 
+let interpolated = lerpMatrix(figures[0], figures[1], 0)
+
 for (let i = 0; i < 10; i++) {
-  uniforms[`line${i}`] = () => [0, 0, 0, 0];
+  uniforms[`line${i}`] = () => [0, 0, 0, 0]
 }
 
 lines.forEach((line, i) => {
-  uniforms[`line${i}`] = () => interpolated[i];
-});
+  uniforms[`line${i}`] = () => interpolated[i]
+})
 
-uniforms.linesCount = () => lines.length;
+uniforms.linesCount = () => lines.length
 
 for (let i = 0; i < 10; i++) {
-  uniforms[`dot${i}`] = () => [0, 0, 0, 0];
+  uniforms[`dot${i}`] = () => [0, 0, 0, 0]
 }
 
 dots.forEach((line, i) => {
-  uniforms[`dot${i}`] = () => line;
-});
+  uniforms[`dot${i}`] = () => line
+})
 
-uniforms.dotsCount = () => dots.length;
-
-let interpolated = lerpMatrix(figures[0], figures[1], 0);
+uniforms.dotsCount = () => dots.length
 
 onMounted(() => {
   if (canvasRef.value) {
@@ -221,7 +221,8 @@ onMounted(() => {
     canvasRef.value.height = canvasRef.value.clientHeight * dpr
 
     const handleResize = () => {
-      if (!canvasRef.value) return
+      if (!canvasRef.value)
+        return
 
       const dpr = Math.min(window.devicePixelRatio, 2)
 
@@ -232,8 +233,9 @@ onMounted(() => {
     window.addEventListener('resize', handleResize)
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!canvasRef.value) return
-      
+      if (!canvasRef.value)
+        return
+
       const rect = canvasRef.value.getBoundingClientRect()
       const x = e.clientX / window.innerWidth * 2 - 1
       const y = -((e.clientY - rect.top) / rect.height * 2 - 1)
@@ -243,7 +245,7 @@ onMounted(() => {
     window.addEventListener('mousemove', handleMouseMove)
 
     const regl = createRegl({
-      canvas: canvasRef.value
+      canvas: canvasRef.value,
     })
 
     const drawFullscreenQuad = regl({
@@ -258,14 +260,14 @@ onMounted(() => {
       ${lines.map((line, i) => {
         return `
           uniform vec4 line${i};
-        `;
+        `
       }).join(`
       `)}
       uniform float linesCount;
       ${dots.map((line, i) => {
         return `
           uniform vec2 dot${i};
-        `;
+        `
       }).join(`
       `)}
 
@@ -362,7 +364,7 @@ onMounted(() => {
             if (i > 0.0) {
               fgColor = mix(bgColor, fgColor, smoothstep(-0.007, -0.002, l));
             }
-          `;
+          `
         }).join(`
         `)}
         
@@ -372,7 +374,7 @@ onMounted(() => {
             if (d < 0.001) {
               fgColor = fgColor;
             }
-          `;
+          `
         }).join(`
         `)}
         
@@ -399,26 +401,30 @@ onMounted(() => {
       `,
       attributes: {
         position: [
-          [-1, -1], [1, -1], [1, 1],
-          [-1, -1], [1, 1], [-1, 1],
+          [-1, -1],
+          [1, -1],
+          [1, 1],
+          [-1, -1],
+          [1, 1],
+          [-1, 1],
         ],
       },
       uniforms,
       count: 6,
-    });
+    })
 
     const renderController = regl.frame(() => {
       drawFullscreenQuad()
 
-      const time = performance.now() / 1000;
-      const step = time % (figures.length - 1);
-      
+      const time = performance.now() / 1000
+      const step = time % (figures.length - 1)
+
       state.step = step
 
-      const from = figures[Math.floor(step)];
-      const to = figures[Math.floor(step) + 1];
+      const from = figures[Math.floor(step)]
+      const to = figures[Math.floor(step) + 1]
 
-      interpolated = lerpMatrix(from, to, Math.pow(time % 1, 16));
+      interpolated = lerpMatrix(from, to, (time % 1) ** 16)
     })
 
     onUnmounted(() => {
@@ -431,5 +437,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <canvas ref="canvasRef" id="canvas" class="absolute inset-0 w-full h-full" />
+  <canvas id="canvas" ref="canvasRef" class="absolute inset-0 w-full h-full" />
 </template>
