@@ -1,24 +1,11 @@
 <script setup lang="ts">
-import { AlertCircle, Briefcase, MessageSquare, Search } from 'lucide-vue-next'
+import type { Mentor } from '@/components/ui/MentorsCard.vue'
+import MentorCard from '@/components/ui/MentorsCard.vue'
+import { AlertCircle, Search } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
-import MailIcon from '~icons/mdi/email-variant'
-import PhoneIcon from '~icons/mdi/phone'
-import TgIcon from '~icons/mdi/telegram'
 
 function reloadPage() {
   window.location.reload()
-}
-
-interface Mentor {
-  id: number
-  tg: string
-  firstName: string
-  lastName: string
-  occupation: string
-  experience: string
-  profTags: { id: number, title: string }[]
-  contacts: { id: number, type: number, link: string }[]
-  services: { id: number, name: string, price: number }[]
 }
 
 const mentors = ref<Mentor[]>([])
@@ -50,7 +37,7 @@ async function fetchMentors() {
     // Собираем все уникальные теги
     const allTags = new Set<string>()
     data.items?.forEach((mentor: Mentor) => {
-      mentor.profTags.forEach((tag) => {
+      mentor.profTags?.forEach((tag) => {
         allTags.add(tag.title)
       })
     })
@@ -164,92 +151,12 @@ onMounted(() => {
           Менторы не найдены
         </div>
 
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          <div
-            v-for="mentor in filteredMentors" :key="mentor.id"
-            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-          >
-            <div class="p-6">
-              <div class="flex items-center gap-10">
-                <img :src="`https://t.me/i/userpic/160/${mentor.tg}.jpg`" :alt="`Аватар ${mentor.tg}`" class="rounded-full align-self-center">
-                <div>
-                  <h3 class="text-xl font-semibold text-gray-900">
-                    {{ mentor.firstName }} {{ mentor.lastName }}
-                  </h3>
-                  <p class="text-gray-600 mt-1">
-                    {{ mentor.occupation }}
-                  </p>
-                  <div class="mt-4">
-                    <div class="flex items-center text-sm text-gray-500">
-                      <Briefcase class="h-4 w-4 mr-2" />
-                      <span>{{ mentor.experience }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-4">
-                <div class="flex flex-wrap gap-2">
-                  <span
-                    v-for="tag in mentor.profTags" :key="tag.id"
-                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
-                  >
-                    {{ tag.title }}
-                  </span>
-                </div>
-
-                <div class="mt-4">
-                  <h4 class="text-sm font-medium text-gray-900 mb-2">
-                    Услуги:
-                  </h4>
-                  <ul class="space-y-2">
-                    <li
-                      v-for="service in mentor.services" :key="service.id"
-                      class="flex justify-between items-start text-sm gap-5"
-                    >
-                      <span>{{ service.name }}</span>
-                      <span class="font-medium whitespace-nowrap">{{
-                        service.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} ₽</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div class="mt-5">
-                  <hr class="mb-4">
-                  <div class="flex items-center justify-between gap-3">
-                    <template v-for="contact in mentor.contacts" :key="contact.id">
-                      <a
-                        v-if="contact.type === 1" :href="contact.link" target="_blank"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200"
-                        rel="noopener noreferrer"
-                      >
-                        <TgIcon class="h-7 w-7" />
-                      </a>
-                      <span
-                        v-else-if="contact.type === 2"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
-                      >
-                        <MailIcon class="h-7 w-7" />
-                      </span>
-                      <span
-                        v-else-if="contact.type === 3"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
-                      >
-                        <PhoneIcon class="h-7 w-7" />
-                      </span>
-                      <span
-                        v-else-if="contact.type === 4"
-                        class="text-blue-500 hover:text-blue-700 transition-colors duration-200 cursor-pointer"
-                      >
-                        <MessageSquare class="h-7 w-7" />
-                      </span>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <masonry-wall
+          v-else v-slot="{ item }" :items="filteredMentors" :gap="25" :min-columns="1"
+          :max-columns="2"
+        >
+          <MentorCard :mentor="item" />
+        </masonry-wall>
       </div>
     </div>
   </section>
