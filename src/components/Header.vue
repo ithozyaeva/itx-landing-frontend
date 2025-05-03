@@ -19,16 +19,16 @@ function setUser(user: TelegramUser, token: string) {
   <header
     class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
   >
-    <div class="container flex h-16 items-center justify-between md:justify-between">
-      <div class="flex items-center gap-2 font-bold text-xl">
+    <div class="container flex gap-5 h-16 items-center justify-between md:justify-between">
+      <a href="/" class="flex items-center gap-2 font-bold text-xl">
         <img :src="Logo" class="w-20">
-      </div>
+      </a>
       <Navigation />
       <div class="flex justify-end">
-        <TelegramAuth v-if="!tgUser" bot-name="itx_welcome_bot" @auth="setUser" />
+        <TelegramAuth v-if="!tgUser" @auth="setUser" />
         <a
           v-else
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" href="/platform" rel="noopener noreferrer"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" href="/platform" rel="noopener noreferrer"
         >
           Перейти в платформу
         </a>

@@ -16,11 +16,13 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.1.0",
+    "@yeger/vue-masonry-wall": "^5.0.18",
     "axios": "^1.8.4",
     "cva": "npm:class-variance-authority@^0.7.1",
     "lucide-vue-next": "^0.488.0",
     "regl": "^2.1.1",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.7.0",
@@ -29,7 +31,6 @@
     "@iconify-json/mdi": "^1.2.3",
     "@tsconfig/node22": "^22.0.0",
     "@types/node": "^22.13.4",
-    "@vitejs/plugin-basic-ssl": "^2.0.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/compiler-sfc": "^3.5.13",
     "@vue/eslint-config-typescript": "^14.4.0",

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
 import Card from '@/components/ui/Card.vue'
+import TgImage from '@/components/ui/TgImage.vue'
+import { AlertCircle } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 
 interface Review {
@@ -9,33 +11,6 @@ interface Review {
   occupation: string
   text: string
 }
-
-// const reviews: Review[] = [
-//   {
-//     avatarPath: izede,
-//     author: 'Денис Чернов',
-//     occupation: 'Vue-евангелист',
-//     text: '"В сообществе царит атмосфера полной поддержки друг дуга, есть чаты на любой вкус. Разработчики самых разных уровней, от начинающих до матерых разработчиков. Клубы и активности идут бесконечным потоком, сообщество само генерирует контент."',
-//   },
-//   {
-//     avatarPath: placeholderSvg,
-//     author: 'Мария Иванова',
-//     occupation: 'CTO, Startup Hub',
-//     text: '"Сообщество IT-ХОЗЯЕВА стало для меня настоящим прорывом. Здесь я нашла единомышленников, менторов и партнеров для своих проектов. Рекомендую всем, кто хочет расти в IT-сфере."',
-//   },
-//   {
-//     avatarPath: placeholderSvg,
-//     author: 'Дмитрий Сидоров',
-//     occupation: 'Product Manager, Sber',
-//     text: '"Благодаря экспертам из IT-ХОЗЯЕВА я смог быстро перепрофилироваться из разработчика в продуктового менеджера. Материалы и поддержка сообщества бесценны для тех, кто хочет развиваться."',
-//   },
-//   {
-//     avatarPath: placeholderSvg,
-//     author: 'Елена Смирнова',
-//     occupation: 'DevOps Engineer, VK',
-//     text: '"Вступила в сообщество год назад, когда только начинала карьеру в DevOps. Сейчас я работаю в крупной компании и продолжаю учиться у лучших специалистов отрасли в IT-ХОЗЯЕВА."',
-//   },
-// ]
 
 function reloadPage() {
   window.location.reload()
@@ -108,10 +83,12 @@ onMounted(search)
           <template #content>
             <div class="pt-6">
               <div class="flex items-start gap-4">
-                <img
-                  :src="`https://t.me/i/userpic/160/${review.author.tg}.jpg`" :alt="`Аватар ${review.author}`" class="rounded-full" width="60"
+                <TgImage
+                  :username="review.author.tg"
+                  class="rounded-full"
+                  width="60"
                   height="60"
-                >
+                />
                 <div class="grid gap-1">
                   <h3 class="font-bold">
                     {{ review.author.firstName ?? "" }} {{ review.author.lastName ?? "" }}
