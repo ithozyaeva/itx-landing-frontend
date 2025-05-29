@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import CalendarSection from '@/sections/CalendarSection.vue'
 import FAQSection from '@/sections/FAQSection.vue'
 import InviteSection from '@/sections/InviteSection.vue'
 import MentorsSection from '@/sections/MentorsSection.vue'
@@ -13,6 +14,7 @@ import WhySection from '@/sections/WhySection.vue'
   <WhySection />
   <MentorsSection />
   <TariffSection />
+  <CalendarSection />
   <ReviewSection />
   <FAQSection />
   <InviteSection />
