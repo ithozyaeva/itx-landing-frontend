@@ -3,14 +3,13 @@ import type { CommunityEvent } from '@/services/events'
 import Card from '@/components/ui/Card.vue'
 import TgImage from '@/components/ui/TgImage.vue'
 import { eventService, PlaceTypeRu } from '@/services/events'
-import { asyncComputed } from '@vueuse/core'
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
-const isFuture = ref(false)
-const cachedEvents: Record<'new' | 'old', CommunityEvent[]> = {
+const neededEvents = ref<'new' | 'old'>('new')
+const events = ref<Record<'new' | 'old', CommunityEvent[]>>({
   new: [],
   old: [],
-}
+})
 
 const formatter = new Intl.DateTimeFormat('ru-RU', {
   day: 'numeric',
@@ -21,24 +20,23 @@ const formatter = new Intl.DateTimeFormat('ru-RU', {
   hour12: false,
 })
 
-const events = asyncComputed(async () => {
-  if (isFuture.value) {
-    if (cachedEvents.new.length === 0) {
-      cachedEvents.new = await eventService.getNext()
-    }
-    return cachedEvents.new
+async function loadEvents() {
+  events.value.old = await eventService.getOld()
+  events.value.new = await eventService.getNext()
+
+  if (events.value.new.length === 0) {
+    neededEvents.value = 'old'
   }
-  else {
-    if (cachedEvents.old.length === 0) {
-      cachedEvents.old = await eventService.getOld()
-    }
-    return cachedEvents.old
-  }
-}, [])
+}
+
+const hasFutureEvents = computed(() => events.value.new.length > 0)
+const isFuture = computed(() => neededEvents.value === 'new')
+
+onMounted(loadEvents)
 </script>
 
 <template>
-  <section id="calendar" class="w-full py-12 md:py-18 lg:py-24" style="background-color: #1a73e8; color: white;">
+  <section v-if="events.new.length > 0 || events.old.length > 0" id="calendar" class="w-full py-12 md:py-18 lg:py-24" style="background-color: #1a73e8; color: white;">
     <div class="container px-4 md:px-6">
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
         <div class="space-y-2">
@@ -49,16 +47,17 @@ const events = asyncComputed(async () => {
 
         <div class="flex space-x-4 rounded-full cursor-pointer select-none w-fit" style="background-color: #155ac1;">
           <button
+            v-if="hasFutureEvents"
             :class="{ 'bg-blue-800': isFuture, 'bg-transparent': !isFuture }"
             class="px-6 py-2 rounded-full transition-colors duration-200"
-            @click="isFuture = true"
+            @click="neededEvents = 'new'"
           >
             Будет
           </button>
           <button
             :class="{ 'bg-blue-800': !isFuture, 'bg-transparent': isFuture }"
             class="px-6 py-2 rounded-full transition-colors duration-200"
-            @click="isFuture = false"
+            @click="neededEvents = 'old'"
           >
             Было
           </button>
@@ -66,7 +65,7 @@ const events = asyncComputed(async () => {
       </div>
 
       <div class="grid gap-6 pt-12 lg:grid-cols-1 lg:gap-8">
-        <Card v-for="event in events" :key="event.title">
+        <Card v-for="event in events[neededEvents]" :key="event.title">
           <template #header>
             <div class="space-y-3">
               <div class="flex items-center justify-between">
