@@ -7,27 +7,34 @@ import Users from '~icons/lucide/users'
 </script>
 
 <template>
-  <section class="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted">
+  <section
+    class="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted"
+  >
     <PromoteBackground />
     <div class="relative container px-4 md:px-6 space-y-10 xl:space-y-16">
       <div class="grid gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
-        <div class="flex flex-col justify-center space-y-4 border bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-4">
+        <div
+          class="flex flex-col justify-center space-y-4 border bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-4"
+        >
           <div class="space-y-2">
-            <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
+            <h1
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl mx-auto md:m-0"
+            >
               Станьте хозяином в мире IT
             </h1>
             <p class="max-w-[600px] text-muted-foreground md:text-xl">
-              Присоединяйтесь к сообществу профессионалов, общайтесь, делитесь опытом и развивайтесь вместе
+              Присоединяйтесь к сообществу профессионалов, общайтесь, делитесь опытом и развивайтесь
+              вместе
             </p>
           </div>
-          <div class="flex flex-col gap-2 min-[400px]:flex-row">
+          <div
+            class="flex flex-col gap-2 min-[400px]:flex-row flex-wrap items-center justify-around"
+          >
             <a href="#invite">
-              <Button target-id="pricing" class="px-8" to="invite">
-                Присоединиться
-              </Button>
+              <Button target-id="pricing" class="px-8 w-100%" to="invite"> Присоединиться </Button>
             </a>
             <a href="#why">
-              <Button target-id="features" to="more" type="outline">
+              <Button target-id="features" to="more" class="w-100%" type="outline">
                 Узнать больше
               </Button>
             </a>
@@ -40,7 +47,9 @@ import Users from '~icons/lucide/users'
         </div>
       </div>
       <div class="mx-auto grid items-center gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-3 md:gap-8">
-        <div class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm">
+        <div
+          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
+        >
           <Users class="h-8 w-8 text-primary" />
           <h3 class="text-xl font-bold">
             200+
@@ -49,7 +58,9 @@ import Users from '~icons/lucide/users'
             Активных участников
           </p>
         </div>
-        <div class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm">
+        <div
+          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
+        >
           <MessageSquare class="h-8 w-8 text-primary" />
           <h3 class="text-xl font-bold">
             1000+
@@ -58,7 +69,9 @@ import Users from '~icons/lucide/users'
             Сообщений ежедневно
           </p>
         </div>
-        <div class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm">
+        <div
+          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
+        >
           <Laptop class="h-8 w-8 text-primary" />
           <h3 class="text-xl font-bold">
             20+
