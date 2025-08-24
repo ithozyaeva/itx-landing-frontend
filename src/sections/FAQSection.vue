@@ -34,7 +34,7 @@ const questions: Question[] = [
             Часто задаваемые вопросы
           </h2>
           <p class="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Ответы на популярные вопросы о нашем сообществе
+            Ответы на вопросы о доступе, тарифах и формате участия
           </p>
         </div>
       </div>

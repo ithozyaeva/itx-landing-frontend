@@ -2,7 +2,6 @@
 import PromoteBackground from '@/components/PromoteBackground.vue'
 import Button from '@/components/ui/Button.vue'
 import Laptop from '~icons/lucide/laptop'
-import MessageSquare from '~icons/lucide/message-square'
 import Users from '~icons/lucide/users'
 </script>
 
@@ -20,11 +19,11 @@ import Users from '~icons/lucide/users'
             <h1
               class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl mx-auto md:m-0"
             >
-              Станьте хозяином в мире IT
+              Станьте хозяином своей карьеры в IT
             </h1>
             <p class="max-w-[600px] text-muted-foreground md:text-xl">
-              Присоединяйтесь к сообществу профессионалов, общайтесь, делитесь опытом и развивайтесь
-              вместе
+              Получайте поддержку от экспертов, доступ к закрытым материалам и сильному окружению,
+              чтобы быстрее расти в доходе и уверенно продвигаться по карьерной лестнице
             </p>
           </div>
           <div
@@ -46,7 +45,7 @@ import Users from '~icons/lucide/users'
           > -->
         </div>
       </div>
-      <div class="mx-auto grid items-center gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-3 md:gap-8">
+      <div class="mx-auto grid items-center gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-8">
         <div
           class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
         >
@@ -58,17 +57,7 @@ import Users from '~icons/lucide/users'
             Активных участников
           </p>
         </div>
-        <div
-          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
-        >
-          <MessageSquare class="h-8 w-8 text-primary" />
-          <h3 class="text-xl font-bold">
-            1000+
-          </h3>
-          <p class="text-center text-muted-foreground">
-            Сообщений ежедневно
-          </p>
-        </div>
+        <!-- Удален блок с количеством сообщений ежедневно -->
         <div
           class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
         >
