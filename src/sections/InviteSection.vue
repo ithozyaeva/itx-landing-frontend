@@ -8,10 +8,10 @@ import Button from '@/components/ui/Button.vue'
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
         <div>
           <h2 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-2">
-            Присоединяйтесь и ускорьте свой рост в IT
+            Развивайтесь и растите в IT вместе с нами
           </h2>
           <p class="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl mb-4">
-            Оформите доступ сегодня и получите поддержку экспертов, материалы и нетворкинг уже сейчас
+            Подключайтесь сегодня: прокачивайте навыки, работайте над проектами и укрепляйте карьеру в поддерживающем окружении
           </p>
         </div>
         <div class="w-full max-w-sm text-black">
