@@ -62,7 +62,7 @@ onMounted(search)
             Что говорят участники
           </h2>
           <p class="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Узнайте, как наше сообщество помогает IT-специалистам достигать новых высот
+            Реальные истории о том, как участники прокачивают навыки, создают проекты, получают офферы и растут в доходе
           </p>
         </div>
       </div>
