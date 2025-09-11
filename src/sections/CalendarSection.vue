@@ -2,7 +2,8 @@
 import type { CommunityEvent } from '@/services/events'
 import Card from '@/components/ui/Card.vue'
 import TgImage from '@/components/ui/TgImage.vue'
-import { eventService, PlaceTypeRu } from '@/services/events'
+import { useDictionary } from '@/composables/useDictionary'
+import { eventService } from '@/services/events'
 import { computed, onMounted, ref } from 'vue'
 
 const neededEvents = ref<'new' | 'old'>('new')
@@ -31,6 +32,8 @@ async function loadEvents() {
 
 const hasFutureEvents = computed(() => events.value.new.length > 0)
 const isFuture = computed(() => neededEvents.value === 'new')
+
+const { placeTypesObject } = useDictionary(['placeTypes'])
 
 onMounted(loadEvents)
 </script>
@@ -70,7 +73,7 @@ onMounted(loadEvents)
             <div class="space-y-3">
               <div class="flex items-center justify-between">
                 <div class="flex space-x-2 text-sm">
-                  <span class="inline-block rounded-lg px-3 py-1 text-xs text-white" style="background-color: #1e8be9;">{{ PlaceTypeRu[event.placeType] }}</span>
+                  <span class="inline-block rounded-lg px-3 py-1 text-xs text-white" style="background-color: #1e8be9;">{{ placeTypesObject[event.placeType] }}</span>
                   <span class="inline-block rounded-lg px-3 py-1 text-xs text-white" style="background-color: #e91e63;">{{ event.eventType }}</span>
                   <span v-if="event.placeType !== 'ONLINE'" class="inline-block rounded-lg bg-blue-800 px-3 py-1 text-xs text-white">{{ event.customPlaceType }}</span>
                 </div>

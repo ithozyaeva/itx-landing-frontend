@@ -15,12 +15,6 @@ export interface CommunityEvent {
 }
 
 export type PlaceType = 'ONLINE' | 'OFFLINE' | 'HYBRID'
-
-export const PlaceTypeRu: Record<PlaceType, string> = {
-  ONLINE: 'Онлайн',
-  OFFLINE: 'Оффлайн',
-  HYBRID: 'Гибрид',
-}
 export const eventService = {
   getOld: async () => {
     const response: { items: CommunityEvent[], total: number } = (await axios.get('/api/events/old')).data
