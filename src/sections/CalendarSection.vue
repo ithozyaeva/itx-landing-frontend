@@ -104,14 +104,12 @@ onMounted(loadEvents)
                   <Typography
                     as="span"
                     variant="date"
-                    class="text-accent"
+                    class="text-accent cursor-pointer"
+                    @click="openInGoogleCalendar(event)"
                   >
                     {{ formatter.format(new Date(event.date)) }}
                   </Typography>
-                  <CalendarIcon
-                    class="cursor-pointer"
-                    @click="openInGoogleCalendar(event)"
-                  />
+                  <CalendarIcon />
                 </div>
               </div>
               <Typography
