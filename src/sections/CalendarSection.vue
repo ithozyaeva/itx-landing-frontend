@@ -2,8 +2,9 @@
 import type { CommunityEvent } from '@/services/events'
 import Card from '@/components/ui/Card.vue'
 import TgImage from '@/components/ui/TgImage.vue'
-import { useDictionary } from '@/composables/useDictionary'
+import { useGoogleCalendar } from '@/composables/useGoogleCalendar.ts'
 import { eventService } from '@/services/events'
+import { Button, CalendarIcon, Label, Tag, Typography } from 'itx-ui-kit'
 import { computed, onMounted, ref } from 'vue'
 
 const neededEvents = ref<'new' | 'old'>('new')
@@ -30,93 +31,144 @@ async function loadEvents() {
   }
 }
 
+const visibleCount = ref(4)
+
+function showMore() {
+  visibleCount.value += 4
+}
+
+const visibleEvents = computed(() => {
+  return events.value[neededEvents.value].slice(0, visibleCount.value)
+})
+
 const hasFutureEvents = computed(() => events.value.new.length > 0)
 const isFuture = computed(() => neededEvents.value === 'new')
 
-const { placeTypesObject } = useDictionary(['placeTypes'])
+const { openInGoogleCalendar } = useGoogleCalendar()
 
 onMounted(loadEvents)
 </script>
 
 <template>
-  <section v-if="events.new.length > 0 || events.old.length > 0" id="calendar" class="w-full py-12 md:py-18 lg:py-24" style="background-color: #1a73e8; color: white;">
-    <div class="container px-4 md:px-6">
+  <section
+    v-if="events.new.length > 0 || events.old.length > 0"
+    id="meets"
+    class="w-full py-12 md:py-18 lg:pt-20 lg:pb-14 rounded-[50px] bg-primary mt-20 lg:mt-28"
+  >
+    <div class="container px-6 md:px-10">
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
-        <div class="space-y-2">
-          <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
-            Присоединяйся к нашим встречам
-          </h2>
+        <div class="flex flex-col gap-5 items-center justify-center">
+          <Typography
+            variant="h2"
+            as="h2"
+            class="text-accent"
+          >
+            Мероприятия для участников
+          </Typography>
+          <Typography
+            variant="body-xl"
+            as="p"
+            class="max-w-[540px]"
+          >
+            Эксперты нашего сообщества, которые готовы поделиться экспертизой
+          </Typography>
         </div>
 
-        <div class="flex space-x-4 rounded-full cursor-pointer select-none w-fit" style="background-color: #155ac1;">
-          <button
+        <div class="flex space-x-4 rounded-full cursor-pointer select-none w-fit">
+          <Tag
             v-if="hasFutureEvents"
-            :class="{ 'bg-blue-800': isFuture, 'bg-transparent': !isFuture }"
-            class="px-6 py-2 rounded-full transition-colors duration-200"
+            :variant="isFuture ? 'active' : 'default'"
             @click="neededEvents = 'new'"
           >
-            Будет
-          </button>
-          <button
-            :class="{ 'bg-blue-800': !isFuture, 'bg-transparent': isFuture }"
-            class="px-6 py-2 rounded-full transition-colors duration-200"
+            Будущие
+          </Tag>
+          <Tag
+            :variant="!isFuture ? 'active' : 'default'"
             @click="neededEvents = 'old'"
           >
-            Было
-          </button>
+            Прошедшие
+          </Tag>
         </div>
       </div>
 
-      <div class="grid gap-6 pt-12 lg:grid-cols-1 lg:gap-8">
-        <Card v-for="event in events[neededEvents]" :key="event.title">
+      <div class="grid gap-3 pt-12 lg:grid-cols-2 lg:gap-5">
+        <Card
+          v-for="event in visibleEvents"
+          :key="event.title"
+          class="min-h-[253px]"
+        >
           <template #header>
-            <div class="space-y-3">
+            <div class="flex flex-col gap-[14px]">
               <div class="flex items-center justify-between">
-                <div class="flex space-x-2 text-sm">
-                  <span class="inline-block rounded-lg px-3 py-1 text-xs text-white" style="background-color: #1e8be9;">{{ placeTypesObject[event.placeType] }}</span>
-                  <span class="inline-block rounded-lg px-3 py-1 text-xs text-white" style="background-color: #e91e63;">{{ event.eventType }}</span>
-                  <span v-if="event.placeType !== 'ONLINE'" class="inline-block rounded-lg bg-blue-800 px-3 py-1 text-xs text-white">{{ event.customPlaceType }}</span>
-                </div>
-                <div class="text-sm">
-                  {{ formatter.format(new Date(event.date)) }}
+                <div class="flex space-x-2 text-sm items-center ">
+                  <Typography
+                    as="span"
+                    variant="date"
+                    class="text-accent"
+                  >
+                    {{ formatter.format(new Date(event.date)) }}
+                  </Typography>
+                  <CalendarIcon
+                    class="cursor-pointer"
+                    @click="openInGoogleCalendar(event)"
+                  />
                 </div>
               </div>
-              <div class="text-xl font-semibold mt-2">
+              <Typography
+                variant="h4"
+                as="h4"
+              >
                 {{ event.title }}
+              </Typography>
+              <div class="flex flex-wrap items-center gap-1">
+                <Label
+                  v-for="tag in event.eventTags"
+                  :key="tag.id"
+                >{{ tag.name }}</Label>
               </div>
-              <p class="text-xs">
-                {{ event.description }}
-              </p>
             </div>
           </template>
           <template #content>
-            <div class="space-y-4">
-              <div v-for="host in event.hosts" :key="host.id" class="flex items-center mt-4 space-x-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+              <div
+                v-for="host in event.hosts"
+                :key="host.id"
+                class="flex items-center space-x-4 "
+              >
                 <TgImage
                   :username="host.tg"
                   class="rounded-full"
-                  width="60"
-                  height="60"
+                  width="48"
+                  height="48"
                 />
                 <div>
-                  <div class="font-semibold">
+                  <Typography
+                    variant="name-text"
+                    as="p"
+                    class="font-semibold"
+                  >
                     {{ host.firstName }} {{ host.lastName }}
-                  </div>
-                  <div class="text-sm text-muted-foreground">
+                  </Typography>
+                  <Typography
+                    variant="label"
+                    class="text-muted-foreground"
+                  >
                     {{ host.tg }}
-                  </div>
+                  </Typography>
                 </div>
-              </div>
-              <div v-if="event.open">
-                <a v-if="event.placeType === 'ONLINE'" :href="event.place" class="inline-block text-sm">{{ event.place }}</a>
-                <p v-else>
-                  Место встречи: {{ event.place }}
-                </p>
               </div>
             </div>
           </template>
         </Card>
       </div>
     </div>
+    <Button
+      v-if="visibleCount < events[neededEvents].length"
+      variant="filled"
+      class="flex justify-self-center mt-12"
+      @click="showMore"
+    >
+      Показать больше
+    </Button>
   </section>
 </template>

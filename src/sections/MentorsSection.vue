@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import type { Mentor } from '@/components/ui/MentorsCard.vue'
-import MentorCard from '@/components/ui/MentorsCard.vue'
-import { AlertCircle, Search } from 'lucide-vue-next'
-import { onMounted, ref, watch } from 'vue'
+import { Button, MentorCard, TagsGroup, Typography } from 'itx-ui-kit'
+
+import { AlertCircle } from 'lucide-vue-next'
+import { computed, onMounted, ref, watch } from 'vue'
 
 function reloadPage() {
   window.location.reload()
 }
 
 const mentors = ref<Mentor[]>([])
-const filteredMentors = ref<Mentor[]>([])
-const searchQuery = ref('')
-const selectedSpecialization = ref<string | null>(null)
+const selectedSpecialization = ref<string[]>(['Все'])
+const specializations = ref<string[]>([])
+
 const loading = ref(true)
 const error = ref<string | null>(null)
 
-const specializations = ref<string[]>([])
+const visibleCount = ref(6)
 
 async function fetchMentors() {
   try {
@@ -32,8 +33,6 @@ async function fetchMentors() {
 
     const data = await response.json()
     mentors.value = data.items ?? []
-    filteredMentors.value = data.items ?? []
-
     // Собираем все уникальные теги
     const allTags = new Set<string>()
     data.items?.forEach((mentor: Mentor) => {
@@ -42,9 +41,7 @@ async function fetchMentors() {
       })
     })
 
-    if (allTags.size > 0) {
-      specializations.value = Array.from(allTags)
-    }
+    specializations.value = ['Все', ...Array.from(allTags)]
   }
   catch (err) {
     console.error('Ошибка при загрузке менторов:', err)
@@ -55,108 +52,158 @@ async function fetchMentors() {
   }
 }
 
-function handleSpecializationClick(spec: string) {
-  if (selectedSpecialization.value === spec) {
-    selectedSpecialization.value = null
-  }
-  else {
-    selectedSpecialization.value = spec
-  }
+function showMore() {
+  visibleCount.value += 6
 }
 
-watch([searchQuery, selectedSpecialization, mentors], () => {
-  let result = mentors.value
-
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    result = result.filter(
-      mentor =>
-        `${mentor.firstName} ${mentor.lastName}`.toLowerCase().includes(query)
-        || mentor.occupation.toLowerCase().includes(query)
-        || mentor.profTags.some(tag => tag.title.toLowerCase().includes(query))
-        || mentor.services.some(service => service.name.toLowerCase().includes(query)),
-    )
+watch(selectedSpecialization, (val, oldVal) => {
+  if (val.includes('Все') && !oldVal.includes('Все')) {
+    selectedSpecialization.value = ['Все']
+    return
   }
 
-  if (selectedSpecialization.value) {
-    result = result.filter(mentor =>
-      mentor.profTags.some(
-        tag => tag.title.toLowerCase() === selectedSpecialization.value?.toLowerCase(),
-      ),
-    )
+  if (val.length === 0) {
+    selectedSpecialization.value = ['Все']
+    return
   }
 
-  filteredMentors.value = result
+  if (val.length > 1 && val.includes('Все')) {
+    selectedSpecialization.value = val.filter(t => t !== 'Все')
+  }
 })
 
-onMounted(() => {
-  fetchMentors()
+const filteredMentors = computed(() => {
+  const tags = selectedSpecialization.value
+
+  if (tags.includes('Все') || tags.length === 0) {
+    return mentors.value
+  }
+
+  return mentors.value.filter(m =>
+    m.profTags?.some(t => tags.includes(t.title)),
+  )
 })
+
+const displayedMentors = computed(() =>
+  filteredMentors.value.slice(0, visibleCount.value).map((mentor: Mentor) => ({
+    id: mentor.id,
+    avatar: `https://t.me/i/userpic/160/${mentor.tg}.jpg`,
+    name: `${mentor.firstName} ${mentor.lastName}`,
+    position: mentor.occupation,
+    description: mentor.experience,
+    labels: mentor.profTags.map(tag => tag.title),
+    link: mentor.contacts.find(c => c.type === 1)?.link ?? '#',
+  })),
+)
+
+onMounted(fetchMentors)
 </script>
 
 <template>
-  <section id="mentors" class="w-full py-12 md:py-24 lg:py-32">
-    <div class="container px-4 md:px-6">
-      <div v-if="error && !mentors.length" class="text-center py-10">
+  <section
+    id="mentors"
+    class="w-full pt-16 md:pt-24 lg:pt-32"
+  >
+    <div class="container px-6 md:px-10">
+      <div
+        v-if="error && !mentors.length"
+        class="text-center py-10"
+      >
         <div class="flex justify-center mb-4">
           <AlertCircle class="h-12 w-12 text-red-500" />
         </div>
-        <p class="text-red-500 mb-2">
+        <Typography
+          variant="body-m"
+          class="text-red-500 mb-2"
+        >
           {{ error }}
-        </p>
-        <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="reloadPage">
-          Попробовать снова
-        </button>
+        </Typography>
+        <Button
+          class="mt-4"
+          @click="reloadPage"
+        >
+          Повторить
+        </Button>
       </div>
 
-      <div v-else>
-        <div class="mb-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-6">
-            Наши менторы
-          </h2>
-          <div class="relative">
-            <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              v-model="searchQuery" type="text" placeholder="Поиск по имени, специализации или услугам..."
-              class="pl-10 w-full px-4 py-2 border rounded"
+      <div
+        v-else
+        class="flex flex-col gap-9"
+      >
+        <div class="flex flex-col items-center justify-center gap-8">
+          <div class="flex flex-col items-center justify-center gap-5">
+            <Typography
+              variant="h2"
+              as="h2"
+              class="text-accent"
             >
+              База менторов
+            </Typography>
+            <Typography
+              variant="body-xl"
+              as="p"
+              class="text-center"
+            >
+              Эксперты нашего сообщества, которые готовы поделиться экспертизой
+            </Typography>
           </div>
-
-          <div class="mt-6">
-            <p class="text-sm font-medium text-gray-700 mb-3">
-              Фильтр по специализации:
-            </p>
-            <div class="flex flex-wrap gap-2">
-              <span
-                v-for="spec in specializations" :key="spec" class="cursor-pointer px-3 py-1 rounded-full text-sm"
-                :class="selectedSpecialization === spec
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-700'
-                " @click="handleSpecializationClick(spec)"
-              >
-                {{ spec }}
-              </span>
-            </div>
-          </div>
+          <TagsGroup
+            v-model="selectedSpecialization"
+            :tags="specializations"
+            :multiple="true"
+            class="justify-center"
+          />
         </div>
 
-        <div v-if="loading" class="text-center py-16">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
-          <p class="mt-4 text-gray-600">
-            Загрузка менторов...
-          </p>
-        </div>
-
-        <div v-else-if="filteredMentors.length === 0" class="text-center py-16 text-gray-500">
-          Менторы не найдены
-        </div>
-
-        <masonry-wall
-          v-else v-slot="{ item }" :items="filteredMentors" :gap="25" :min-columns="1"
-          :max-columns="2"
+        <div
+          v-if="loading"
+          class="text-center py-16"
         >
-          <MentorCard :mentor="item" />
-        </masonry-wall>
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto" />
+          <Typography
+            variant="body-l"
+            as="p"
+            class="mt-4 text-muted-foreground"
+          >
+            Загрузка менторов...
+          </Typography>
+        </div>
+
+        <Typography
+          v-else-if="filteredMentors.length === 0"
+          variant="body-l"
+          as="p"
+          class="text-center py-16 text-muted-foreground"
+        >
+          Менторы не найдены
+        </Typography>
+
+        <div
+          v-else
+          class="flex flex-col items-center justify-center gap-9 lg:gap-12"
+        >
+          <div class="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            <MentorCard
+              v-for="mentor in displayedMentors"
+              :key="mentor.id"
+              :avatar="mentor.avatar"
+              :name="mentor.name"
+              :position="mentor.position"
+              :description="mentor.description"
+              :labels="mentor.labels"
+              :link="mentor.link"
+            />
+          </div>
+          <Button
+            v-if="visibleCount < filteredMentors.length"
+            variant="filled"
+            as="button"
+            class="w-fit self-center"
+            @click="showMore"
+          >
+            Показать больше
+          </Button>
+        </div>
       </div>
     </div>
   </section>

@@ -3,7 +3,10 @@ import Button from '@/components/ui/Button.vue'
 </script>
 
 <template>
-  <section id="invite" class="w-full py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground">
+  <section
+    id="invite"
+    class="w-full py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground"
+  >
     <div class="container px-4 md:px-6">
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
         <div>
@@ -15,7 +18,10 @@ import Button from '@/components/ui/Button.vue'
           </p>
         </div>
         <div class="w-full max-w-sm text-black">
-          <a href="https://boosty.to/jointime?isFromFeed=true" target="_blank">
+          <a
+            href="https://boosty.to/jointime?isFromFeed=true"
+            target="_blank"
+          >
             <Button type="outline">Присоединиться сейчас</Button>
           </a>
         </div>

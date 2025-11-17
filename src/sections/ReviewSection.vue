@@ -45,8 +45,14 @@ onMounted(search)
 </script>
 
 <template>
-  <section id="reviews" class="w-full py-12 md:py-24 lg:py-32 bg-muted">
-    <div v-if="loading" class="text-center py-16">
+  <section
+    id="reviews"
+    class="w-full py-12 md:py-24 lg:py-32 bg-muted"
+  >
+    <div
+      v-if="loading"
+      class="text-center py-16"
+    >
       <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
       <p class="mt-4 text-gray-600">
         Загрузка отзывов...
@@ -67,19 +73,28 @@ onMounted(search)
         </div>
       </div>
       <div class="mx-auto grid max-w-5xl gap-6 py-12 md:grid-cols-2 md:gap-8">
-        <div v-if="error && !reviews.length" class="text-center py-10">
+        <div
+          v-if="error && !reviews.length"
+          class="text-center py-10"
+        >
           <div class="flex justify-center mb-4">
             <AlertCircle class="h-12 w-12 text-red-500" />
           </div>
           <p class="text-red-500 mb-2">
             {{ error }}
           </p>
-          <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" @click="reloadPage">
+          <button
+            class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+            @click="reloadPage"
+          >
             Попробовать снова
           </button>
         </div>
 
-        <Card v-for="review in reviews" :key="review.author.id">
+        <Card
+          v-for="review in reviews"
+          :key="review.author.id"
+        >
           <template #content>
             <div class="pt-6">
               <div class="flex items-start gap-4">

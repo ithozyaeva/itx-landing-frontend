@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Card from '@/components/ui/Card.vue'
+import { Accordion, Typography } from 'itx-ui-kit'
 
 interface Question {
   title: string
@@ -23,34 +23,36 @@ const questions: Question[] = [
 </script>
 
 <template>
-  <section id="FAQ" class="w-full py-12 md:py-24 lg:py-32">
-    <div class="container px-4 md:px-6">
+  <section
+    id="FAQ"
+    class="w-full py-12 md:py-24 lg:py-32"
+  >
+    <div class="container px-6 md:px-10 space-y-9">
       <div class="flex flex-col items-center justify-center space-y-4 text-center">
-        <div class="space-y-2">
-          <div class="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-            FAQ
-          </div>
-          <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
-            Часто задаваемые вопросы
-          </h2>
-          <p class="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Ответы на популярные вопросы о нашем сообществе
-          </p>
+        <div class="flex flex-col gap-5">
+          <Typography
+            variant="h2"
+            as="h2"
+            class="text-accent"
+          >
+            Частые вопросы
+          </Typography>
+          <Typography
+            variant="body-xl"
+            as="p"
+            class="max-w-[540px]"
+          >
+            Эксперты нашего сообщества, которые готовы поделиться экспертизой
+          </Typography>
         </div>
       </div>
-      <div class="mx-auto grid max-w-5xl gap-6 py-12">
-        <Card v-for="question in questions" :key="question.answer">
-          <template #header>
-            <div class="text-2xl font-semibold leading-none tracking-tight">
-              {{ question.title }}
-            </div>
-          </template>
-          <template #content>
-            <p class="text-muted-foreground">
-              {{ question.answer }}
-            </p>
-          </template>
-        </Card>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <Accordion
+          v-for="question in questions"
+          :key="question.title"
+          :title="question.title"
+          :content="question.answer"
+        />
       </div>
     </div>
   </section>

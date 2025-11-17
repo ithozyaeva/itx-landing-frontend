@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
-import Logo from '@/assets/it-x-logo.svg'
+import Logo from '@/assets/itx-logo.svg'
+import { useScrollHeader } from '@/composables/useScrollHeader.ts'
 import { useToken } from '@/composables/useToken'
 import { useUser } from '@/composables/useUser'
+import { useWindowSize } from '@vueuse/core'
+import { BurgerIcon, Button, CloseIcon } from 'itx-ui-kit'
+import { computed, ref } from 'vue'
 import Navigation from '../sections/Navigation.vue'
 import TelegramAuth from './TelegramAuth.vue'
 
@@ -13,26 +17,113 @@ function setUser(user: TelegramUser, token: string) {
   tgUser.value = user
   tgToken.value = token
 }
+
+const { isScrolled } = useScrollHeader(10)
+const { width } = useWindowSize()
+
+const isMobile = computed(() => {
+  return width.value < 1080
+})
+
+const isMenuOpen = ref(false)
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value
+}
 </script>
 
 <template>
   <header
-    class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+    class="sticky top-0 z-50 w-full transition-all duration-500"
+    :class="{ 'bg-background/0.9 backdrop-blur-[25px]': isScrolled, 'bg-transparent backdrop-blur-0': !isScrolled }"
   >
-    <div class="container flex gap-5 h-16 items-center justify-between md:justify-between">
-      <a href="/" class="flex items-center gap-2 font-bold text-xl">
-        <img :src="Logo" class="w-20">
-      </a>
-      <Navigation />
-      <div class="flex justify-end">
-        <TelegramAuth v-if="!tgUser" @auth="setUser" />
+    <div class="container px-6 md:px-10 flex gap-5 h-[var(--header-height)] items-center justify-between md:justify-between">
+      <div class="flex items-center gap-4 lg:gap-16">
         <a
+          href="/"
+          class="flex items-center gap-2 font-bold text-xl"
+        >
+          <div class=" w-16  sm:w-[88px] md:w-24">
+            <Logo />
+          </div>
+        </a>
+        <Navigation v-if="!isMobile" />
+      </div>
+      <div
+        v-if="!isMobile"
+        class="flex justify-end "
+      >
+        <TelegramAuth
+          v-if="!tgUser"
+          @auth="setUser"
+        />
+        <Button
           v-else
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" href="/platform" rel="noopener noreferrer"
+          variant="filled"
+          as="a"
+          href="/platform"
+          rel="noopener noreferrer"
         >
           Перейти в платформу
-        </a>
+        </Button>
+      </div>
+      <div v-else>
+        <BurgerIcon
+          v-if="!isMenuOpen"
+          class="cursor-pointer "
+          @click="toggleMenu"
+        />
+        <CloseIcon
+          v-else
+          class="cursor-pointer size-12"
+          @click="toggleMenu"
+        />
       </div>
     </div>
   </header>
+  <transition name="fade">
+    <div
+      v-if="isMenuOpen"
+      class="px-6 md:px-10 inset-0 fixed bg-background z-40 flex flex-col justify-center items-center"
+    >
+      <Navigation
+        class="flex flex-col px-6 md:px-10 justify-center items-center navigation"
+        @click="toggleMenu"
+      />
+      <div class="absolute bottom-11 sm:bottom-16 sm:h-16 px-6 md:px-10">
+        <TelegramAuth
+          v-if="!tgUser"
+          class="h-full"
+          @auth="setUser"
+        />
+        <Button
+          v-else
+          class="h-full inline-block"
+          as="a"
+          href="/platform"
+        >
+          Перейти в платформу
+        </Button>
+      </div>
+    </div>
+  </transition>
 </template>
+
+<style scoped>
+::v-deep(.navigation *) {
+  font-size: 48px;
+  @media (width <= 640px) {
+    font-size: 36px;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -1,85 +1,61 @@
 <script setup lang="ts">
-import PromoteBackground from '@/components/PromoteBackground.vue'
-import Button from '@/components/ui/Button.vue'
-import Laptop from '~icons/lucide/laptop'
-import MessageSquare from '~icons/lucide/message-square'
-import Users from '~icons/lucide/users'
+import type { TelegramUser } from '@/services/auth.ts'
+import TelegramAuth from '@/components/TelegramAuth.vue'
+import { useToken } from '@/composables/useToken.ts'
+import { useUser } from '@/composables/useUser.ts'
+import { Button, Typography } from 'itx-ui-kit'
+
+const tgUser = useUser()
+const tgToken = useToken()
+
+function setUser(user: TelegramUser, token: string) {
+  tgUser.value = user
+  tgToken.value = token
+}
 </script>
 
 <template>
   <section
-    class="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-background to-muted"
+    class="relative w-full py-16 md:py-10 lg:py-12 flex flex-col  min-h-[calc(100svh-72px)] md:min-h-fit md:h-auto justify-between items-center
+    before:absolute before:content-['']  before:-z-10 before:w-[1230px] before:h-[836px]
+    before:bg-[url('../assets/icons/crosses-bg.svg')] before:bg-no-repeat before:bg-contain
+    lg:before:-top-2/3 lg:before:-right-[20%] lg:before:bg-right-top
+    sm:before:-top-[280px] sm:before:-right-[480px] sm:before:scale-100 sm:before:opacity-100
+    before:scale-[0.65] before:-top-[200px] before:opacity-50
+    overflow-x-clip
+"
   >
-    <PromoteBackground />
-    <div class="relative container px-4 md:px-6 space-y-10 xl:space-y-16">
-      <div class="grid gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
-        <div
-          class="flex flex-col justify-center space-y-4 border bg-white bg-opacity-50 backdrop-blur-sm rounded-lg p-4"
+    <div class="container px-6 md:px-10 flex flex-col gap-8 items-center md:items-start justify-between h-full flex-1 ">
+      <div class="flex flex-col gap-6 sm:gap-1 text-center md:text-left  sm:items-center md:items-start w-full  md:max-w-6xl">
+        <Typography
+          variant="h1"
+          as="h1"
+          class="uppercase text-accent"
         >
-          <div class="space-y-2">
-            <h1
-              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl mx-auto md:m-0"
-            >
-              Станьте хозяином в мире IT
-            </h1>
-            <p class="max-w-[600px] text-muted-foreground md:text-xl">
-              Присоединяйтесь к сообществу профессионалов, общайтесь, делитесь опытом и развивайтесь
-              вместе
-            </p>
-          </div>
-          <div
-            class="flex flex-col gap-2 min-[400px]:flex-row flex-wrap items-center justify-around"
-          >
-            <a href="#invite">
-              <Button target-id="pricing" class="px-8 w-100%" to="invite"> Присоединиться </Button>
-            </a>
-            <a href="#why">
-              <Button target-id="features" to="more" class="w-100%" type="outline">
-                Узнать больше
-              </Button>
-            </a>
-          </div>
-        </div>
-        <div class="flex items-center justify-center">
-          <!-- <img
-            :src="logo" alt="IT-ХОЗЯЕВА сообщество" class="rounded-lg object-contain"
-          > -->
-        </div>
+          IT-хозяева
+        </Typography>
+        <Typography
+          variant="h1"
+          as="h1"
+          class="uppercase max-sm:text-2xl break-words hyphens-auto w-full max-w-full"
+        >
+          закрытое сообщество IT-специалистов, в котором ценят опыт, юмор и профессион&shy;ализм
+        </Typography>
       </div>
-      <div class="mx-auto grid items-center gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-3 md:gap-8">
-        <div
-          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
+      <div class="flex justify-start ">
+        <TelegramAuth
+          v-if="!tgUser"
+          @auth="setUser"
+        />
+        <Button
+          v-else
+          variant="filled"
+          as="a"
+          href="/platform"
+          rel="noopener noreferrer"
         >
-          <Users class="h-8 w-8 text-primary" />
-          <h3 class="text-xl font-bold">
-            200+
-          </h3>
-          <p class="text-center text-muted-foreground">
-            Активных участников
-          </p>
-        </div>
-        <div
-          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
-        >
-          <MessageSquare class="h-8 w-8 text-primary" />
-          <h3 class="text-xl font-bold">
-            1000+
-          </h3>
-          <p class="text-center text-muted-foreground">
-            Сообщений ежедневно
-          </p>
-        </div>
-        <div
-          class="flex flex-col items-center space-y-2 border rounded-lg p-4 bg-white bg-opacity-50 backdrop-blur-sm"
-        >
-          <Laptop class="h-8 w-8 text-primary" />
-          <h3 class="text-xl font-bold">
-            20+
-          </h3>
-          <p class="text-center text-muted-foreground">
-            Эксклюзивных материалов
-          </p>
-        </div>
+          Перейти в платформу
+        </Button>
       </div>
     </div>
   </section>
