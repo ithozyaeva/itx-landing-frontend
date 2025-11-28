@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { CommunityEvent } from '@/services/events'
+import { Button, CalendarIcon, Label, Popover, Tag, Typography } from 'itx-ui-kit'
+import { computed, onMounted, ref } from 'vue'
 import Card from '@/components/ui/Card.vue'
 import TgImage from '@/components/ui/TgImage.vue'
 import { useGoogleCalendar } from '@/composables/useGoogleCalendar.ts'
 import { eventService } from '@/services/events'
-import { Button, CalendarIcon, Label, Tag, Typography } from 'itx-ui-kit'
-import { computed, onMounted, ref } from 'vue'
 
 const neededEvents = ref<'new' | 'old'>('new')
 const events = ref<Record<'new' | 'old', CommunityEvent[]>>({
@@ -74,7 +74,7 @@ onMounted(loadEvents)
           </Typography>
         </div>
 
-        <div class="flex space-x-4 rounded-full cursor-pointer select-none w-fit">
+        <div class="flex space-x-4 rounded-full select-none w-fit">
           <Tag
             v-if="hasFutureEvents"
             :variant="isFuture ? 'active' : 'default'"
@@ -100,17 +100,44 @@ onMounted(loadEvents)
           <template #header>
             <div class="flex flex-col gap-[14px]">
               <div class="flex items-center justify-between">
-                <div class="flex space-x-2 text-sm items-center ">
-                  <Typography
-                    as="span"
-                    variant="date"
-                    class="text-accent cursor-pointer"
-                    @click="openInGoogleCalendar(event)"
-                  >
-                    {{ formatter.format(new Date(event.date)) }}
-                  </Typography>
-                  <CalendarIcon />
-                </div>
+                <Popover
+                  :offset="12"
+                  placement="top-end"
+                >
+                  <template #trigger>
+                    <div
+                      class="flex space-x-2 items-center text-accent hover:opacity-75 transition-opacity"
+                    >
+                      <Typography
+                        as="span"
+                        variant="date"
+                      >
+                        {{ formatter.format(new Date(event.date)) }}
+                      </Typography>
+                      <CalendarIcon />
+                    </div>
+                  </template>
+                  <template #content>
+                    <ul class="flex flex-col gap-2">
+                      <li
+                        class="cursor-pointer hover:text-accent transition-colors"
+                        @click="openInGoogleCalendar(event)"
+                      >
+                        <Typography variant="body-m">
+                          + Google Calendar
+                        </Typography>
+                      </li>
+                      <li
+                        class="cursor-pointer hover:text-accent transition-colors"
+                        @click="eventService.getICS(event.id)"
+                      >
+                        <Typography variant="body-m">
+                          + iCalendar
+                        </Typography>
+                      </li>
+                    </ul>
+                  </template>
+                </Popover>
               </div>
               <Typography
                 variant="h4"

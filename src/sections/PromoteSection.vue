@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth.ts'
+import { Button, Typography } from 'itx-ui-kit'
 import TelegramAuth from '@/components/TelegramAuth.vue'
 import { useToken } from '@/composables/useToken.ts'
 import { useUser } from '@/composables/useUser.ts'
-import { Button, Typography } from 'itx-ui-kit'
 
 const tgUser = useUser()
 const tgToken = useToken()

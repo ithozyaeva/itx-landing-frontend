@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
+import { Button } from 'itx-ui-kit'
+import { onMounted, ref } from 'vue'
 import ConfirmServiceModal from '@/components/ConfirmServiceModal.vue'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
-import { Button } from 'itx-ui-kit'
-import { onMounted, ref } from 'vue'
 
 const props = defineProps<{ variant?: 'filled' | 'dark-filled' }>()
 

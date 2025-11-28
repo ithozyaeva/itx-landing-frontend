@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
+import { useWindowSize } from '@vueuse/core'
+import { BurgerIcon, Button, CloseIcon } from 'itx-ui-kit'
+import { computed, ref } from 'vue'
 import Logo from '@/assets/itx-logo.svg'
 import { useScrollHeader } from '@/composables/useScrollHeader.ts'
 import { useToken } from '@/composables/useToken'
 import { useUser } from '@/composables/useUser'
-import { useWindowSize } from '@vueuse/core'
-import { BurgerIcon, Button, CloseIcon } from 'itx-ui-kit'
-import { computed, ref } from 'vue'
 import Navigation from '../sections/Navigation.vue'
 import TelegramAuth from './TelegramAuth.vue'
 
@@ -70,12 +70,12 @@ function toggleMenu() {
       <div v-else>
         <BurgerIcon
           v-if="!isMenuOpen"
-          class="cursor-pointer "
+          class="cursor-pointer hover:opacity-75 transition-opacity"
           @click="toggleMenu"
         />
         <CloseIcon
           v-else
-          class="cursor-pointer size-12"
+          class="cursor-pointer size-12 hover:opacity-75 transition-opacity"
           @click="toggleMenu"
         />
       </div>

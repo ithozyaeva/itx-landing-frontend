@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+import { Typography } from 'itx-ui-kit'
+import { computed } from 'vue'
+
 import {
   GradesIcon,
   GradesMobileIcon,
@@ -11,10 +15,6 @@ import {
   VacanciesMobileIcon,
 } from '@/assets/icons'
 import FeatureItem from '@/components/ui/FeatureItem.vue'
-import { useWindowSize } from '@vueuse/core'
-
-import { Typography } from 'itx-ui-kit'
-import { computed } from 'vue'
 
 interface Feature {
   title: string

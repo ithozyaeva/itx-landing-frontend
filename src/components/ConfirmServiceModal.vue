@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Button, CloseIcon, Typography } from 'itx-ui-kit'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
-import { Button, CloseIcon, Typography } from 'itx-ui-kit'
 
 defineProps<{
   isOpen: boolean
@@ -42,12 +42,14 @@ function handleBackdropClick(event: MouseEvent) {
           v-if="isOpen"
           class="bg-[#1D2723] rounded-3xl border-2 border-[#2B3D36] p-9 w-full mx-5 max-w-3xl  relative shadow-xl"
         >
-          <Button
-            class="absolute right-2 top-2 cursor-pointer"
+          <button
+            class="absolute right-3 top-3 cursor-pointer hover:opacity-75 transition-opacity"
             @click="handleClose"
           >
-            <CloseIcon class="h-8 w-8" />
-          </Button>
+            <CloseIcon
+              class="h-8 w-8"
+            />
+          </button>
 
           <Typography
             variant="h3"
@@ -68,7 +70,7 @@ function handleBackdropClick(event: MouseEvent) {
                 variant="body-l"
                 href="/privacy"
                 target="_blank"
-                class="text-accent underline cursor-pointer"
+                class="text-accent underline cursor-pointer hover:text-accent/75 transition-colors"
               >
                 политикой конфиденциальности
               </Typography>

@@ -1,5 +1,5 @@
-import type { TelegramUser } from '@/services/auth'
 import type { RemovableRef } from '@vueuse/core'
+import type { TelegramUser } from '@/services/auth'
 import { useLocalStorage } from '@vueuse/core'
 
 export function useUser(): RemovableRef<null | TelegramUser> {

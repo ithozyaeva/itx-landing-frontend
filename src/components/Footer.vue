@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth.ts'
+import { Button, Typography } from 'itx-ui-kit'
 import TelegramAuth from '@/components/TelegramAuth.vue'
 import { useToken } from '@/composables/useToken.ts'
 import { useUser } from '@/composables/useUser.ts'
-import { Button, Typography } from 'itx-ui-kit'
 
 const tgUser = useUser()
 const tgToken = useToken()
@@ -72,7 +72,7 @@ function setUser(user: TelegramUser, token: string) {
             variant="body-s"
             class="flex items-center"
           >
-            ©{{ new Date().getFullYear() }}, ИП Стародубцев А.А. Все права защищены
+            ©{{ new Date().getFullYear() }}, IT-ХОЗЯЕВА. Все права защищены
           </Typography>
         </div>
       </div>

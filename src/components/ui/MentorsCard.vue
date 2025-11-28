@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import TgImage from '@/components/ui/TgImage.vue'
 import { Briefcase, MessageSquare } from 'lucide-vue-next'
 import { computed, defineProps } from 'vue'
 import MailIcon from '~icons/mdi/email-variant'
 import PhoneIcon from '~icons/mdi/phone'
 import TgIcon from '~icons/mdi/telegram'
+import TgImage from '@/components/ui/TgImage.vue'
 
 const props = defineProps<{
   mentor: Mentor

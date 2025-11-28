@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
-import Card from '@/components/ui/Card.vue'
-import TgImage from '@/components/ui/TgImage.vue'
 import { AlertCircle } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
+import Card from '@/components/ui/Card.vue'
+import TgImage from '@/components/ui/TgImage.vue'
 
 interface Review {
   avatarPath: string
