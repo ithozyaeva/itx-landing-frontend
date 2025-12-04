@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import Button from '@/components/ui/Button.vue'
+import { useWindowSize } from '@vueuse/core'
+import { Typography } from 'itx-ui-kit'
+import { computed } from 'vue'
+
+import {
+  GradesIcon,
+  GradesMobileIcon,
+  MeetingsIcon,
+  MeetingsMobileIcon,
+  TopicsIcon,
+  TopicsMobileIcon,
+  VacanciesIcon,
+  VacanciesMobileIcon,
+} from '@/assets/icons'
 import FeatureItem from '@/components/ui/FeatureItem.vue'
-import Database from '~icons/lucide/database'
-import Globe from '~icons/lucide/globe'
-import MessageSquare from '~icons/lucide/message-square'
-import Shield from '~icons/lucide/shield'
-import Star from '~icons/lucide/star'
-import Users from '~icons/lucide/users'
 
 interface Feature {
   title: string
@@ -15,70 +22,65 @@ interface Feature {
   icon: Component
 }
 
+const { width } = useWindowSize()
+
+const isMobile = computed(() => width.value < 600)
+
 const features: Feature[] = [
   {
-    icon: Shield,
-    title: 'Экспертная поддержка',
-    description: 'Получите доступ к консультациям от ведущих специалистов отрасли',
+    icon: isMobile.value ? TopicsMobileIcon : TopicsIcon,
+    title: 'обсуждаем не только работу',
+    description: 'Участники общаются на самые разные темы и стараются помочь, если у кого-то возник вопрос или проблема.',
   },
   {
-    icon: Database,
-    title: 'Эксклюзивные материалы',
-    description: 'Библиотека курсов, вебинаров и документации, недоступная в открытом доступе',
+    icon: isMobile.value ? GradesMobileIcon : GradesIcon,
+    title: 'ждём участников с любым бэкграундом',
+    description: 'В сообществе собраны специалисты разных грейдов и специальностей из отечественных бигтехов и зарубежных стартапов. ',
   },
   {
-    icon: Users,
-    title: 'Сильное комьюнити',
-    description: 'Нетворкинг с профессионалами и единомышленниками из IT-индустрии',
+    icon: isMobile.value ? VacanciesMobileIcon : VacanciesIcon,
+    title: 'Помогаем с поиском работы и собесами',
+    description: 'Регулярно постим вакансии и рекомендуем рефералов в свои компании. Даём советы по резюме и прохождению собеседований.',
   },
   {
-    icon: Globe,
-    title: 'Карьерные возможности',
-    description: 'Закрытая база вакансий и рекомендации для трудоустройства',
+    icon: isMobile.value ? MeetingsMobileIcon : MeetingsIcon,
+    title: 'проводим регулярные встречи и тренинги',
+    description: 'Регулярные английские и книжные клубы, лекции, тренинги и закрытые встречи для VIP-участников.',
   },
-  {
-    icon: MessageSquare,
-    title: 'Приватные обсуждения',
-    description: 'Закрытые чаты для обсуждения актуальных тем и решения сложных задач',
-  },
-  {
-    icon: Star,
-    title: 'Персональный рост',
-    description: 'Индивидуальные планы развития и менторство от лидеров индустрии',
-  },
+
 ]
 </script>
 
 <template>
-  <section id="why" class="w-full py-12 md:py-24 lg:py-32">
-    <div class="container px-4 md:px-6">
-      <div class="flex flex-col items-center justify-center space-y-4 text-center">
-        <div class="space-y-2">
-          <div class="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
-            Преимущества
-          </div>
-          <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
-            Почему выбирают нас
-          </h2>
-          <p class="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Наше сообщество предлагает уникальные возможности для профессионального роста и развития в IT-сфере
-          </p>
-        </div>
+  <section
+    id="why"
+    class="w-full pt-16 md:pt-24 lg:pt-32"
+  >
+    <div class="container px-6 md:px-10 flex flex-col gap-10">
+      <div class="flex flex-col gap-5 text-center lg:flex-row lg:flex-auto lg:text-start justify-between">
+        <Typography
+          variant="h2"
+          as="h2"
+          class="text-accent basis-2/5"
+        >
+          чем занимаются IT-хозяева?
+        </Typography>
+        <Typography
+          variant="body-xl"
+          as="p"
+          class="basis-1/2"
+        >
+          IT-X — это 250+ представителей IT разных направлений и грейдов. Мы помогаем друг другу с обучением, наймом, работой, делимся полезной инфой и просто общаемся на любые темы.
+        </Typography>
       </div>
-      <div class="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 md:gap-10 gap-y-4 md:gap-y-4">
-        <FeatureItem v-for="feature in features" :key="feature.title" :title="feature.title" :description="feature.description" :icon="feature.icon" />
-      </div>
-      <div class="flex justify-center flex-col sm:flex-row items-start gap-4">
-        <a href="#tariffs">
-          <Button class="px-8">
-            Выбрать тариф
-          </Button>
-        </a>
-        <a href="#reviews">
-          <Button type="outline" class="px-8">
-            Отзывы участников
-          </Button>
-        </a>
+      <div class="mx-auto grid grid-cols-1  md:grid-cols-1 lg:grid-cols-2 gap-5 flex-auto">
+        <FeatureItem
+          v-for="feature in features"
+          :key="feature.title"
+          :title="feature.title"
+          :description="feature.description"
+          :icon="feature.icon"
+        />
       </div>
     </div>
   </section>

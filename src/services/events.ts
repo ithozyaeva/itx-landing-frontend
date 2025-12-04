@@ -12,6 +12,8 @@ export interface CommunityEvent {
   eventType: string
   open: boolean
   hosts: TelegramUser[]
+  eventTags: { id: number, name: string }[]
+  videoLink: string
 }
 
 export type PlaceType = 'ONLINE' | 'OFFLINE' | 'HYBRID'
@@ -21,7 +23,15 @@ export const eventService = {
     return response.items
   },
   getNext: async () => {
-    const reponse: { items: CommunityEvent[], total: number } = (await axios.get('/api/events/next')).data
-    return reponse.items
+    const response: { items: CommunityEvent[], total: number } = (await axios.get('/api/events/next')).data
+    return response.items
+  },
+  getICS: (eventId: number) => {
+    try {
+      window.location.href = `/api/events/ics?eventId=${eventId}`
+    }
+    catch (error) {
+      console.error('Failed to download ICS file:', error)
+    }
   },
 }

@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth'
+import { Button } from 'itx-ui-kit'
+import { onMounted, ref } from 'vue'
 import ConfirmServiceModal from '@/components/ConfirmServiceModal.vue'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
-import { onMounted, ref } from 'vue'
+
+const props = defineProps<{ variant?: 'filled' | 'dark-filled' }>()
 
 const emit = defineEmits<{
   (e: 'auth', user: TelegramUser, token: string): void
@@ -12,6 +15,8 @@ const emit = defineEmits<{
 const isConfirmedPrivacy = useConfirmedPrivacy()
 
 const isModalOpen = ref<boolean>(false)
+
+const btnVariant = props.variant || 'filled'
 
 onMounted(() => {
   const urlParams = new URLSearchParams(window.location.search)
@@ -42,15 +47,20 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="flex items-center">
-    <a
-      class="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+  <div class="flex items-center h-full">
+    <Button
+      :variant="btnVariant"
+      as="a"
+      class="h-full"
       @click="handleClick"
     >
-      Войти через Telegram
-    </a>
+      <slot>Стать IT-хозяином</slot>
+    </Button>
   </div>
-  <ConfirmServiceModal :is-open="isModalOpen" @close="isModalOpen = false" />
+  <ConfirmServiceModal
+    :is-open="isModalOpen"
+    @close="isModalOpen = false"
+  />
 </template>
 
 <style scoped>

@@ -1,9 +1,81 @@
+<script setup lang="ts">
+import type { TelegramUser } from '@/services/auth.ts'
+import { Button, Typography } from 'itx-ui-kit'
+import TelegramAuth from '@/components/TelegramAuth.vue'
+import { useToken } from '@/composables/useToken.ts'
+import { useUser } from '@/composables/useUser.ts'
+
+const tgUser = useUser()
+const tgToken = useToken()
+
+function setUser(user: TelegramUser, token: string) {
+  tgUser.value = user
+  tgToken.value = token
+}
+</script>
+
 <template>
-  <footer class="w-full border-t py-6 md:py-0">
-    <div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-      <p class="text-center text-sm leading-loose text-muted-foreground md:text-left">
-        © {{ new Date().getFullYear() }} IT-ХОЗЯЕВА. Все права защищены.
-      </p>
+  <footer class="w-full md:py-0 bg-accent rounded-t-[50px]">
+    <div class="flex px-6 md:px-10 container  flex-col lg:flex-row gap-12 lg:gap-9 pt-8 pb-11">
+      <div class="flex flex-col gap-5 basis-1/2">
+        <Typography
+          variant="h3"
+          as="h3"
+          class="text-2xl text-background"
+        >
+          Вступай в сообщество и становись IT-хозяином
+        </Typography>
+        <TelegramAuth
+          v-if="!tgUser"
+          variant="dark-filled"
+          @auth="setUser"
+        />
+        <Button
+          v-else
+          variant="dark-filled"
+          as="a"
+          class="block w-fit "
+          href="/platform"
+          rel="noopener noreferrer"
+        >
+          Перейти в платформу
+        </Button>
+      </div>
+
+      <div class="flex flex-col gap-10 lg:gap-14 basis-1/2 text-background">
+        <Typography>
+          По всем вопросам:<br>
+          <Typography
+            as="a"
+            variant="body-l"
+            href="https://t.me/jointimer"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline"
+          >
+            @jointimer
+          </Typography>
+        </Typography>
+        <div class="flex flex-col gap-1 align-bottom">
+          <Typography
+            as="a"
+            variant="body-s"
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline"
+          >
+            Политика обработки пользовательских данных
+          </Typography>
+          <Typography
+            as="span"
+            variant="body-s"
+            class="flex items-center"
+          >
+            ©{{ new Date().getFullYear() }}, IT-ХОЗЯЕВА. Все права защищены
+          </Typography>
+        </div>
+      </div>
     </div>
   </footer>
 </template>

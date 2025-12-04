@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { Button, CloseIcon, Typography } from 'itx-ui-kit'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
-import { X } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
@@ -38,41 +38,59 @@ function handleBackdropClick(event: MouseEvent) {
       @click="handleBackdropClick"
     >
       <Transition name="modal-scale">
-        <div v-if="isOpen" class="bg-white rounded-lg p-6 w-full max-w-md relative shadow-xl">
+        <div
+          v-if="isOpen"
+          class="bg-[#1D2723] rounded-3xl border-2 border-[#2B3D36] p-9 w-full mx-5 max-w-3xl  relative shadow-xl"
+        >
           <button
-            class="absolute right-4 top-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+            class="absolute right-3 top-3 cursor-pointer hover:opacity-75 transition-opacity"
             @click="handleClose"
           >
-            <X class="h-4 w-4" />
+            <CloseIcon
+              class="h-8 w-8"
+            />
           </button>
 
-          <h2 class="text-xl font-bold mb-4">
+          <Typography
+            variant="h3"
+            as="p"
+            class="mb-3 text-accent"
+          >
             Согласие на обработку персональных данных
-          </h2>
+          </Typography>
 
-          <div class="mb-4">
-            <p className="text-sm">
+          <div class="mb-7">
+            <Typography
+              as="p"
+              variant="body-l"
+            >
               Нажимая на кнопку "Принять", Вы соглашаетесь с
-              <a href="/privacy" target="_blank" className="text-blue-600 underline">
+              <Typography
+                as="a"
+                variant="body-l"
+                href="/privacy"
+                target="_blank"
+                class="text-accent underline cursor-pointer hover:text-accent/75 transition-colors"
+              >
                 политикой конфиденциальности
-              </a>
+              </Typography>
               и даёте согласие на обработку персональных данных согласно Федеральному закону №152-ФЗ.
-            </p>
+            </Typography>
           </div>
 
-          <div class="flex justify-end gap-3">
-            <button
-              class="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition duration-300 cursor-pointer"
+          <div class="flex flex-col-reverse sm:flex-row justify-start gap-5">
+            <Button
+              variant="stroke"
               @click="handleClose"
             >
-              Отменить
-            </button>
-            <button
-              class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300 cursor-pointer"
+              Отклонить
+            </Button>
+            <Button
+              variant="filled"
               @click="handleConfirmed"
             >
               Принять
-            </button>
+            </Button>
           </div>
         </div>
       </Transition>

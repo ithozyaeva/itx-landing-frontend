@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
+import { Typography } from 'itx-ui-kit'
 
 defineProps<{
   icon: Component
@@ -9,17 +10,27 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-start gap-4">
-    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-      <component :is="icon" class="h-5 w-5" />
+  <div class="flex flex-col items-center align-middle justify-between py-10 gap-4 bg-primary rounded-3xl ">
+    <div class="flex shrink-0 items-center justify-center w-full px-5 lg:px-10 min-h-32 aspect-[2/1] sm:aspect-auto ">
+      <component
+        :is="icon"
+        class="w-full "
+      />
     </div>
-    <div class="space-y-2">
-      <h3 class="text-xl font-bold">
+    <div class="flex flex-col gap-3 items-center text-center px-5 sm:px-28 lg:px-16 ">
+      <Typography
+        variant="h3"
+        as="h3"
+        class="uppercase text-accent"
+      >
         {{ title }}
-      </h3>
-      <p class="text-muted-foreground">
+      </Typography>
+      <Typography
+        variant="body-l"
+        as="p"
+      >
         {{ description }}
-      </p>
+      </Typography>
     </div>
   </div>
 </template>

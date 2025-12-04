@@ -1,19 +1,25 @@
+<script setup lang="ts">
+import { MenuItem } from 'itx-ui-kit'
+
+const menuItems = [
+  { label: 'менторы', href: '#mentors' },
+  { label: 'встречи', href: '#meets' },
+  { label: 'тарифы', href: '#tariffs' },
+  { label: 'вопросы', href: '#FAQ' },
+]
+</script>
+
 <template>
-  <nav class="hidden md:flex gap-6">
-    <a href="#why" class="text-sm font-medium hover:underline underline-offset-4">
-      Преимущества
-    </a>
-    <a href="#mentors" class="text-sm font-medium hover:underline underline-offset-4">
-      Менторы
-    </a>
-    <a href="#tariffs" class="text-sm font-medium hover:underline underline-offset-4">
-      Тарифы
-    </a>
-    <a href="#reviews" class="text-sm font-medium hover:underline underline-offset-4">
-      Отзывы
-    </a>
-    <a href="#FAQ" class="text-sm font-medium hover:underline underline-offset-4">
-      FAQ
-    </a>
+  <nav class="flex gap-2 lg:gap-10">
+    <MenuItem
+      v-for="item in menuItems"
+      :key="item.href"
+      :href="item.href"
+      variant="default"
+      as="a"
+      class="capitalize border-4 border-transparent"
+    >
+      {{ item.label }}
+    </MenuItem>
   </nav>
 </template>

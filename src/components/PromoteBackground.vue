@@ -437,5 +437,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <canvas id="canvas" ref="canvasRef" class="absolute inset-0 w-full h-full" />
+  <canvas
+    id="canvas"
+    ref="canvasRef"
+    class="absolute inset-0 w-full h-full"
+  />
 </template>
