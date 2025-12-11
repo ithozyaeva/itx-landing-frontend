@@ -20,7 +20,7 @@
     "@yeger/vue-masonry-wall": "^5.0.18",
     "axios": "^1.8.4",
     "cva": "npm:class-variance-authority@^0.7.1",
-    "itx-ui-kit": "file:../../itx-ui-kit",
+    "itx-ui-kit": "^0.2.1",
     "lucide-vue-next": "^0.488.0",
     "regl": "^2.1.1",
     "vue": "^3.5.13",
