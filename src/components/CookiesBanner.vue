@@ -52,37 +52,6 @@ function acceptCookies() {
   </Transition>
 </template>
 
-<!-- <template>
-  <Transition name="banner-slide">
-    <div
-      v-if="isVisible"
-      class="fixed bottom-0 left-0 right-0 z-40 bg-background/95 border-2 rounded-3xl mx-5 my-3 border-accent/20 shadow-lg"
-    >
-      <div class="container px-6 md:px-10 py-4 md:py-6">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div class="flex-1">
-            <Typography
-              variant="body-m"
-              as="p"
-              class="text-foreground"
-            >
-              Для повышения удобства работы с сайтом ithozyaeva.ru использует файлы cookie и рекомендательные технологии. В них содержатся данные о прошлых посещениях сайта. Если вы не хотите, чтобы эти данные обрабатывались, отключите cookie в настройках браузера.
-            </Typography>
-          </div>
-          <Button
-            as="button"
-            variant="filled"
-            class="shrink-0 w-full md:w-fit"
-            @click="acceptCookies"
-          >
-            Понятно
-          </Button>
-        </div>
-      </div>
-    </div>
-  </Transition>
-</template> -->
-
 <style scoped>
 .banner-slide-enter-active {
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
