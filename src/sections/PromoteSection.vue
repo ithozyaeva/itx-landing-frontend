@@ -1,16 +1,25 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth.ts'
 import { Button, Typography } from 'itx-ui-kit'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import TelegramAuth from '@/components/TelegramAuth.vue'
 import { useToken } from '@/composables/useToken.ts'
 import { useUser } from '@/composables/useUser.ts'
 
 const tgUser = useUser()
 const tgToken = useToken()
+const yandexMetrika = useYandexMetrika()
 
 function setUser(user: TelegramUser, token: string) {
   tgUser.value = user
   tgToken.value = token
+}
+
+function trackPlatformClick() {
+  yandexMetrika.reachGoal('platform_redirect_click', {
+    location: 'promote_section',
+    isAuthenticated: !!tgUser.value,
+  } as any)
 }
 </script>
 
@@ -53,6 +62,7 @@ function setUser(user: TelegramUser, token: string) {
           as="a"
           href="/platform"
           rel="noopener noreferrer"
+          @click="trackPlatformClick"
         >
           Перейти в платформу
         </Button>

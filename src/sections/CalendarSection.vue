@@ -2,6 +2,7 @@
 import type { CommunityEvent } from '@/services/events'
 import { Button, CalendarIcon, Label, Popover, Tag, Typography } from 'itx-ui-kit'
 import { computed, onMounted, ref } from 'vue'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import Card from '@/components/ui/Card.vue'
 import TgImage from '@/components/ui/TgImage.vue'
 import { useGoogleCalendar } from '@/composables/useGoogleCalendar.ts'
@@ -45,6 +46,19 @@ const hasFutureEvents = computed(() => events.value.new.length > 0)
 const isFuture = computed(() => neededEvents.value === 'new')
 
 const { openInGoogleCalendar } = useGoogleCalendar()
+const yandexMetrika = useYandexMetrika()
+
+function handleGoogleCalendarClick(eventTitle: string) {
+  yandexMetrika.reachGoal('calendar_google_add', {
+    event: eventTitle,
+  } as any)
+}
+
+function handleICSClick(eventTitle: string) {
+  yandexMetrika.reachGoal('calendar_ics_add', {
+    event: eventTitle,
+  } as any)
+}
 
 onMounted(loadEvents)
 </script>
@@ -121,7 +135,7 @@ onMounted(loadEvents)
                     <ul class="flex flex-col gap-2">
                       <li
                         class="cursor-pointer hover:text-accent transition-colors"
-                        @click="openInGoogleCalendar(event)"
+                        @click="() => { handleGoogleCalendarClick(event.title); openInGoogleCalendar(event) }"
                       >
                         <Typography variant="body-m">
                           + Google Calendar
@@ -129,7 +143,7 @@ onMounted(loadEvents)
                       </li>
                       <li
                         class="cursor-pointer hover:text-accent transition-colors"
-                        @click="eventService.getICS(event.id)"
+                        @click="() => { handleICSClick(event.title); eventService.getICS(event.id) }"
                       >
                         <Typography variant="body-m">
                           + iCalendar

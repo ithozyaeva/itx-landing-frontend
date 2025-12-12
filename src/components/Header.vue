@@ -3,6 +3,7 @@ import type { TelegramUser } from '@/services/auth'
 import { useWindowSize } from '@vueuse/core'
 import { BurgerIcon, Button, CloseIcon } from 'itx-ui-kit'
 import { computed, ref } from 'vue'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import Logo from '@/assets/itx-logo.svg'
 import { useScrollHeader } from '@/composables/useScrollHeader.ts'
 import { useToken } from '@/composables/useToken'
@@ -12,10 +13,18 @@ import TelegramAuth from './TelegramAuth.vue'
 
 const tgUser = useUser()
 const tgToken = useToken()
+const yandexMetrika = useYandexMetrika()
 
 function setUser(user: TelegramUser, token: string) {
   tgUser.value = user
   tgToken.value = token
+}
+
+function trackPlatformClick() {
+  yandexMetrika.reachGoal('platform_redirect_click', {
+    location: 'header',
+    isAuthenticated: !!tgUser.value,
+  } as any)
 }
 
 const { isScrolled } = useScrollHeader(10)
@@ -63,6 +72,7 @@ function toggleMenu() {
           as="a"
           href="/platform"
           rel="noopener noreferrer"
+          @click="trackPlatformClick"
         >
           Перейти в платформу
         </Button>
@@ -101,6 +111,7 @@ function toggleMenu() {
           class="h-full inline-block"
           as="a"
           href="/platform"
+          @click="trackPlatformClick"
         >
           Перейти в платформу
         </Button>

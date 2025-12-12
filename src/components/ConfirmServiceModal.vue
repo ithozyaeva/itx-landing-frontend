@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Button, CloseIcon, Typography } from 'itx-ui-kit'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
 
@@ -12,11 +13,17 @@ const emit = defineEmits<{
 }>()
 
 const isConfirmedPrivacy = useConfirmedPrivacy()
+const yandexMetrika = useYandexMetrika()
 
 function handleConfirmed() {
   isConfirmedPrivacy.value = true
   emit('close')
-  window.open(authService.getBotUrl(), '_blank')
+  const botUrl = authService.getBotUrl()
+  yandexMetrika.reachGoal('privacy_modal_accept', {
+    action: 'accept',
+  } as any)
+  yandexMetrika.extLink(botUrl, { title: 'Стать IT-Хозяином (после модалки)' })
+  window.open(botUrl, '_blank')
 }
 
 function handleClose() {

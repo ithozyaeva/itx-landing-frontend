@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PriceCard, Typography } from 'itx-ui-kit'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 
 interface Tariff {
   name: string
@@ -9,6 +10,15 @@ interface Tariff {
   features: string[]
   link: string
   isPopular?: boolean
+}
+
+const yandexMetrika = useYandexMetrika()
+
+function handleSubscriptionClick(tariffName: string, link: string) {
+  yandexMetrika.reachGoal('subscription_click', {
+    tariff: tariffName,
+  } as any)
+  yandexMetrika.extLink(link, { title: `Подписка ${tariffName}` })
 }
 
 const tariffs: Tariff[] = [
@@ -80,16 +90,21 @@ const tariffs: Tariff[] = [
         </div>
       </div>
       <div class="grid pt-12 lg:grid-cols-3 gap-5">
-        <PriceCard
+        <div
           v-for="tariff in tariffs"
           :key="tariff.name"
-          :name="tariff.name"
-          :price="tariff.price"
-          :old-price="tariff.oldPrice"
-          :features="tariff.features"
-          :link="tariff.link"
-          :variant="tariff.isPopular ? 'highlighted' : 'default'"
-        />
+          class="contents"
+          @click="handleSubscriptionClick(tariff.name, tariff.link)"
+        >
+          <PriceCard
+            :name="tariff.name"
+            :price="tariff.price"
+            :old-price="tariff.oldPrice"
+            :features="tariff.features"
+            :link="tariff.link"
+            :variant="tariff.isPopular ? 'highlighted' : 'default'"
+          />
+        </div>
       </div>
     </div>
   </section>

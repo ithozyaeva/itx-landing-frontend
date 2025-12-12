@@ -2,6 +2,7 @@
 import type { TelegramUser } from '@/services/auth'
 import { Button } from 'itx-ui-kit'
 import { onMounted, ref } from 'vue'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import ConfirmServiceModal from '@/components/ConfirmServiceModal.vue'
 import { useConfirmedPrivacy } from '@/composables/useUser'
 import { authService } from '@/services/auth'
@@ -13,6 +14,7 @@ const emit = defineEmits<{
 }>()
 
 const isConfirmedPrivacy = useConfirmedPrivacy()
+const yandexMetrika = useYandexMetrika()
 
 const isModalOpen = ref<boolean>(false)
 
@@ -38,7 +40,12 @@ onMounted(() => {
 
 function handleClick() {
   if (isConfirmedPrivacy.value) {
-    window.open(authService.getBotUrl(), '_blank')
+    const botUrl = authService.getBotUrl()
+    yandexMetrika.reachGoal('become_itx_owner_click', {
+      location: props.variant || 'default',
+    } as any)
+    yandexMetrika.extLink(botUrl, { title: 'Стать IT-Хозяином' })
+    window.open(botUrl, '_blank')
   }
   else {
     isModalOpen.value = true
