@@ -39,7 +39,7 @@ function setUser(user: TelegramUser, token: string) {
           as="h1"
           class="uppercase max-sm:text-2xl break-words hyphens-auto w-full max-w-full"
         >
-          закрытое сообщество IT-специалистов, в котором ценят опыт, юмор и профессион&shy;ализм
+          закрытое сообщество <span class="whitespace-nowrap">IT-специалистов</span>, в котором ценят опыт, юмор и профессио&shy;нализм
         </Typography>
       </div>
       <div class="flex justify-start ">

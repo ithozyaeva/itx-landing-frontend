@@ -46,7 +46,7 @@ const questions: Question[] = [
           </Typography>
         </div>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div class="grid grid-cols-1 lg:grid-cols-2 items-start gap-5">
         <Accordion
           v-for="question in questions"
           :key="question.title"
