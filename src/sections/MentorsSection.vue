@@ -4,6 +4,7 @@ import { Button, MentorCard, TagsGroup, Typography } from 'itx-ui-kit'
 
 import { AlertCircle } from 'lucide-vue-next'
 import { computed, onMounted, ref, watch } from 'vue'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 
 function reloadPage() {
   window.location.reload()
@@ -17,6 +18,14 @@ const loading = ref(true)
 const error = ref<string | null>(null)
 
 const visibleCount = ref(6)
+const yandexMetrika = useYandexMetrika()
+
+function handleMentorClick(mentorName: string, link: string) {
+  yandexMetrika.reachGoal('mentor_details_click', {
+    mentor: mentorName,
+  } as any)
+  yandexMetrika.extLink(link, { title: `Ментор ${mentorName}` })
+}
 
 async function fetchMentors() {
   try {
@@ -183,16 +192,21 @@ onMounted(fetchMentors)
           class="flex flex-col items-center justify-center gap-9 lg:gap-12"
         >
           <div class="grid w-full grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            <MentorCard
+            <div
               v-for="mentor in displayedMentors"
               :key="mentor.id"
-              :avatar="mentor.avatar"
-              :name="mentor.name"
-              :position="mentor.position"
-              :description="mentor.description"
-              :labels="mentor.labels"
-              :link="mentor.link"
-            />
+              class="contents"
+              @click="handleMentorClick(mentor.name, mentor.link)"
+            >
+              <MentorCard
+                :avatar="mentor.avatar"
+                :name="mentor.name"
+                :position="mentor.position"
+                :description="mentor.description"
+                :labels="mentor.labels"
+                :link="mentor.link"
+              />
+            </div>
           </div>
           <Button
             v-if="visibleCount < filteredMentors.length"

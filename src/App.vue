@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import CookiesBanner from '@/components/CookiesBanner.vue'
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 </script>
@@ -10,5 +11,6 @@ import Header from '@/components/Header.vue'
       <router-view />
     </main>
     <Footer />
+    <CookiesBanner />
   </div>
 </template>

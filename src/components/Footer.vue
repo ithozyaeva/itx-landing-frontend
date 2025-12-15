@@ -1,16 +1,32 @@
 <script setup lang="ts">
 import type { TelegramUser } from '@/services/auth.ts'
 import { Button, Typography } from 'itx-ui-kit'
+import { useYandexMetrika } from 'yandex-metrika-vue3'
 import TelegramAuth from '@/components/TelegramAuth.vue'
 import { useToken } from '@/composables/useToken.ts'
 import { useUser } from '@/composables/useUser.ts'
 
 const tgUser = useUser()
 const tgToken = useToken()
+const yandexMetrika = useYandexMetrika()
 
 function setUser(user: TelegramUser, token: string) {
   tgUser.value = user
   tgToken.value = token
+}
+
+function trackPlatformClick() {
+  yandexMetrika.reachGoal('platform_redirect_click', {
+    location: 'footer',
+    isAuthenticated: !!tgUser.value,
+  } as any)
+}
+
+function trackJointimerClick() {
+  yandexMetrika.reachGoal('footer_jointimer_click', {
+    location: 'footer',
+  } as any)
+  yandexMetrika.extLink('https://t.me/jointimer', { title: '@jointimer' })
 }
 </script>
 
@@ -37,6 +53,7 @@ function setUser(user: TelegramUser, token: string) {
           class="block w-fit "
           href="/platform"
           rel="noopener noreferrer"
+          @click="trackPlatformClick"
         >
           Перейти в платформу
         </Button>
@@ -52,6 +69,7 @@ function setUser(user: TelegramUser, token: string) {
             target="_blank"
             rel="noopener noreferrer"
             class="underline"
+            @click="trackJointimerClick"
           >
             @jointimer
           </Typography>
