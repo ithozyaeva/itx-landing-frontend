@@ -2,7 +2,7 @@
 import type { TelegramUser } from '@/services/auth'
 import { useWindowSize } from '@vueuse/core'
 import { BurgerIcon, Button, CloseIcon } from 'itx-ui-kit'
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref, watch } from 'vue'
 import { useYandexMetrika } from 'yandex-metrika-vue3'
 import Logo from '@/assets/itx-logo.svg'
 import { useScrollHeader } from '@/composables/useScrollHeader.ts'
@@ -39,6 +39,19 @@ const isMenuOpen = ref(false)
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
 }
+
+watch(isMenuOpen, (open) => {
+  if (open) {
+    document.body.style.overflow = 'hidden'
+  }
+  else {
+    document.body.style.overflow = ''
+  }
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 </script>
 
 <template>

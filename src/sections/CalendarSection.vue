@@ -90,7 +90,7 @@ onMounted(loadEvents)
 
         <div class="flex space-x-4 rounded-full select-none w-fit">
           <Tag
-            v-if="hasFutureEvents"
+            :disabled="!hasFutureEvents"
             :variant="isFuture ? 'active' : 'default'"
             @click="neededEvents = 'new'"
           >
@@ -204,7 +204,7 @@ onMounted(loadEvents)
     <Button
       v-if="visibleCount < events[neededEvents].length"
       variant="filled"
-      class="flex justify-self-center mt-12"
+      class="flex mx-auto mt-12"
       @click="showMore"
     >
       Показать больше
