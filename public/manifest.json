@@ -1,0 +1,16 @@
+{
+  "name": "IT-ХОЗЯЕВА",
+  "short_name": "IT-ХОЗЯЕВА",
+  "description": "Закрытое сообщество IT-специалистов",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

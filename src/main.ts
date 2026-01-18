@@ -1,5 +1,6 @@
 import { VueQueryPlugin } from '@tanstack/vue-query'
 
+import { createHead } from '@unhead/vue/client'
 import MasonryWall from '@yeger/vue-masonry-wall'
 import { createApp } from 'vue'
 import { initYandexMetrika } from 'yandex-metrika-vue3'
@@ -11,6 +12,9 @@ import 'itx-ui-kit/style.css'
 import './assets/base.css'
 
 const app = createApp(App)
+
+const head = createHead()
+app.use(head)
 
 const metrikaId = import.meta.env.VITE_YANDEX_METRIKA_ID
 const metrikaEnabled = import.meta.env.VITE_YANDEX_METRIKA_ENABLED !== 'false'
