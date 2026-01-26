@@ -122,12 +122,22 @@ onMounted(loadEvents)
                     <div
                       class="flex space-x-2 items-center text-accent hover:opacity-75 transition-opacity"
                     >
-                      <Typography
-                        as="span"
-                        variant="date"
-                      >
-                        {{ formatter.format(new Date(event.date)) }}
-                      </Typography>
+                      <div class="flex flex-col">
+                        <Typography
+                          as="span"
+                          variant="date"
+                        >
+                          {{ formatter.format(new Date(event.date)) }} ({{ event.timezone || 'UTC' }})
+                        </Typography>
+                        <Typography
+                          v-if="event.isRepeating && event.repeatPeriod"
+                          as="span"
+                          variant="label"
+                          class="text-xs text-muted-foreground italic"
+                        >
+                          Повторяется
+                        </Typography>
+                      </div>
                       <CalendarIcon />
                     </div>
                   </template>

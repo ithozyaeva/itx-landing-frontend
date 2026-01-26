@@ -6,11 +6,16 @@ export interface CommunityEvent {
   title: string
   description: string
   date: string
+  timezone: string
   placeType: PlaceType
   place: string
   customPlaceType: string
   eventType: string
   open: boolean
+  isRepeating: boolean
+  repeatPeriod?: string
+  repeatInterval?: number
+  repeatEndDate?: string
   hosts: TelegramUser[]
   eventTags: { id: number, name: string }[]
   videoLink: string
