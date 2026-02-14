@@ -10,6 +10,7 @@ export function useGoogleCalendar() {
   }
 
   const buildGoogleCalendarUrl = (event: CommunityEvent, durationMinutes: number = 60): string => {
+    // Дата события уже в UTC из базы, используем её напрямую
     const start = new Date(event.date)
 
     let end: Date
@@ -28,8 +29,14 @@ export function useGoogleCalendar() {
     url.searchParams.set('action', 'TEMPLATE')
     url.searchParams.set('text', event.title || '')
     url.searchParams.set('dates', `${startStr}/${endStr}`)
-    url.searchParams.set('details', event.description || '')
-    url.searchParams.set('location', `${event.videoLink} ${event.place}` || '')
+
+    // Добавляем информацию о таймзоне в описание для справки
+    let details = event.description || ''
+    if (event.timezone && event.timezone !== 'UTC') {
+      details += `\n\n⏰ Время указано для таймзоны: ${event.timezone}`
+    }
+    url.searchParams.set('details', details)
+    url.searchParams.set('location', `${event.videoLink || ''} ${event.place || ''}`.trim())
 
     return url.toString()
   }
