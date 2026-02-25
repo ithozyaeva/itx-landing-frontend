@@ -14,14 +14,22 @@ const events = ref<Record<'new' | 'old', CommunityEvent[]>>({
   old: [],
 })
 
-const formatter = new Intl.DateTimeFormat('ru-RU', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false,
-})
+function formatEventDate(dateString: string): string {
+  const utcDate = new Date(dateString)
+
+  // Конвертируем в МСК (UTC+3)
+  const formatter = new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'Europe/Moscow',
+  })
+
+  return formatter.format(utcDate)
+}
 
 async function loadEvents() {
   events.value.old = await eventService.getOld()
@@ -127,7 +135,7 @@ onMounted(loadEvents)
                           as="span"
                           variant="date"
                         >
-                          {{ formatter.format(new Date(event.date)) }} ({{ event.timezone || 'UTC' }})
+                          {{ formatEventDate(event.date) }} (МСК)
                         </Typography>
                         <Typography
                           v-if="event.isRepeating && event.repeatPeriod"
