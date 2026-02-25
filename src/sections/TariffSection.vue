@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PriceCard, Typography } from 'itx-ui-kit'
 import { useYandexMetrika } from 'yandex-metrika-vue3'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 
 interface Tariff {
   name: string
@@ -62,11 +63,14 @@ const tariffs: Tariff[] = [
     link: 'https://boosty.to/jointime/purchase/967625',
   },
 ]
+
+const { containerRef, isVisible } = useScrollReveal({ threshold: 0.05 })
 </script>
 
 <template>
   <section
     id="tariffs"
+    ref="containerRef"
     class="w-full pt-12 md:pt-24 lg:pt-32"
   >
     <div class="container px-6 md:px-10">
@@ -90,7 +94,7 @@ const tariffs: Tariff[] = [
       </div>
       <div class="grid pt-12 lg:grid-cols-3 gap-5">
         <div
-          v-for="tariff in tariffs"
+          v-for="(tariff, index) in tariffs"
           :key="tariff.name"
           class="contents"
           @click="handleSubscriptionClick(tariff.name, tariff.link)"
@@ -102,6 +106,12 @@ const tariffs: Tariff[] = [
             :features="tariff.features"
             :link="tariff.link"
             :variant="tariff.isPopular ? 'highlighted' : 'default'"
+            :class="[
+              isVisible
+                ? tariff.isPopular ? 'animate-card-reveal-highlight' : 'animate-card-reveal'
+                : 'opacity-0',
+            ]"
+            :style="isVisible ? { animationDelay: `${index * 150}ms` } : undefined"
           />
         </div>
       </div>
