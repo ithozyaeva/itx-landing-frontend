@@ -49,8 +49,8 @@ const structuredData = computed(() => [
     'offers': {
       '@type': 'Offer',
       'priceCurrency': 'RUB',
-      'price': '400',
-      'description': 'Тарифы от 400₽ в месяц',
+      'price': '520',
+      'description': 'Тарифы от 520₽ в месяц',
     },
   },
 ])
